@@ -5,7 +5,8 @@ import { Feather } from '@expo/vector-icons';
 
 import Home from "../pages/Home";
 import Music from '../pages/Music';
-import Notepad from '../pages/Notepad';
+import Notepad from '../pages/Notepad/index';
+import Write from '../pages/Notepad/write';
 import Profile from '../pages/Profile';
 import Games from '../pages/Games';
 
@@ -26,15 +27,15 @@ function TabNavigator() {
       screenOptions={{ 
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#3a46e4',
+          backgroundColor: '#556aa9',
           borderTopColor: 'transparent'
         },
         tabBarActiveTintColor: 'white',
-        tabBarInactiveTintColor: 'black'
+        tabBarInactiveTintColor: '#8896d7'
        }}>
 
         <Tab.Screen
-        name="Home" 
+        name="Início" 
         component={HomeNavigation} 
         options={{
           tabBarIcon: ({ focused, size, color }) => (
@@ -44,7 +45,7 @@ function TabNavigator() {
         />
     
         <Tab.Screen 
-        name="Musicas" 
+        name="Músicas" 
         component={MusicNavigation} 
         options={{
           tabBarIcon: ({ size, color }) => (
@@ -114,7 +115,22 @@ function TabNavigator() {
   function NotepadNavigation() {
     return (
       <AppStack.Navigator screenOptions={{headerShown: false}}>
-        <AppStack.Screen name="Notepad" component={Notepad} />
+        <AppStack.Screen 
+          name="Notepad" 
+          component={Notepad} 
+          options={{
+            headerShown: true,
+            title: 'Conte e Registre Seus Sentimentos',
+            headerStyle: {
+              backgroundColor: '#556aa9',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+          },
+          }}
+        />
+        <AppStack.Screen name="Write" component={Write} />
       </AppStack.Navigator>
     );
   }
@@ -122,7 +138,20 @@ function TabNavigator() {
   function ProfileNavigation() {
     return (
       <AppStack.Navigator screenOptions={{headerShown: false}}>
-        <AppStack.Screen name="Profile" component={Profile} />
+        <AppStack.Screen 
+          name="Profile" 
+          component={Profile} 
+          options={{
+            headerShown: true,
+            title: 'Configurações da Conta',
+            headerStyle: {
+              backgroundColor: '#556aa9',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+          },
+          }}/>
       </AppStack.Navigator>
     );
   }

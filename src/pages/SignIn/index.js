@@ -1,17 +1,18 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../context/auth';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function SignIn() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false);
-  const { signIn } = useContext(AuthContext);
+  const { signIn, loadingAuth } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
@@ -28,8 +29,8 @@ export default function SignIn() {
       <View style={styles.containerHeader}>
         <Animatable.Text animation='fadeInLeft' delay={500} style={styles.message}>Bem-vindo(a)</Animatable.Text>
         <Animatable.Image
-          source={require('../../assets/vetorSingIn.png')}
-          style={{ width: '100%', height: '100%' }}
+          source={require('../../assets/vetorSignIn2.png')}
+          style={{ width: '100%', height: '100%', alignSelf:'center' }}
           resizeMod='contain'
           animation='fadeInUp'
         />
@@ -62,14 +63,20 @@ export default function SignIn() {
           </View>
 
           <TouchableOpacity style={styles.button}  onPress={() => handleLogin()}>
-            <Text style={styles.buttonText}>Entrar</Text>
+            {
+              loadingAuth ? (
+                <ActivityIndicator size={22} color='#FFF'/>
+              ) : (
+                <Text style={styles.buttonText}>Entrar</Text>
+              )
+            }
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.buttonRegister, { marginTop: 15 }]}>
+          <TouchableOpacity style={[styles.buttonRegister, { marginTop: '5%' }]}>
             <Text style={styles.registerText}>Esqueceu sua senha?</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.buttonRegister, { marginTop: 10 }]} onPress={() => navigation.navigate('SignUp')}>
+          <TouchableOpacity style={[styles.buttonRegister, { marginTop: '2%' }]} onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>
           </TouchableOpacity>
 
@@ -83,37 +90,40 @@ export default function SignIn() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#3a46e4'
+    backgroundColor: '#556aa9'
   },
   containerHeader: {
+    width: wp('100%'),
+    height: hp('30%'),
     flex: 1,
-    marginTop: '5%',
-    marginBottom: '15%',
-    paddingStart: '5%'
+    marginTop: hp('2%'),
+    marginBottom: hp('6%'),
+    paddingStart: wp('5%'),
+    paddingEnd: wp('5%')
   },
   message: {
-    fontSize: 28,
+    fontSize: hp('4%'),
     fontWeight: 'bold',
     color: '#fff'
   },
   containerForm: {
     backgroundColor: '#FFF',
     flex: 1,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    paddingStart: '5%',
-    paddingEnd: '5%'
+    borderTopLeftRadius: wp('8%'),
+    borderTopRightRadius: wp('8%'),
+    paddingStart: wp('5%'),
+    paddingEnd: wp('5%')
   },
   title: {
-    fontSize: 17,
-    marginTop: 28,
+    fontSize: hp('2%'),
+    marginTop: hp('3%'),
     fontWeight: 'bold'
   },
   input: {
     borderBottomWidth: 1,
-    height: 40,
-    marginBottom: 12,
-    fontSize: 16
+    height: hp('5%'),
+    marginBottom: hp('3%'),
+    fontSize: hp('2%')
   },
   passwordInputContainer: {
     flexDirection: 'row',
@@ -125,41 +135,43 @@ const styles = StyleSheet.create({
   passwordToggle: {
     position: 'absolute',
     right: 0,
-    paddingBottom:10 
+    paddingBottom: hp('1%')
   },
   button: {
-    backgroundColor: '#3a46e4',
-    width: '100%',
-    borderRadius: 4,
-    paddingVertical: 8,
-    marginTop: 14,
+    backgroundColor: '#556aa9',
+    width: wp('75%'),
+    borderRadius: 50,
+    paddingVertical: wp('2.5%'),
+    marginTop: hp('1.8%'),
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center'
   },
   buttonText: {
     color: '#FFF',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold'
   },
   buttonRegister: {
-    marginTop: 14,
+    marginTop: hp('3%'),
     alignSelf: 'center'
   },
   registerText: {
-    color: '#a1a1a1'
+    color: '#a1a1a1',
+    fontSize: hp('2%')
   },
   icon: {
     position: 'absolute',
-    top: 12,
-    right: 0,
+    top: hp('1%'),
+    right: wp('2%'),
     zIndex: 1
   },
   KeyboardAwareScrollView:{
     backgroundColor: '#FFF',
     flex: 1,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    paddingStart: '5%',
-    paddingEnd: '5%'
+    borderTopLeftRadius: wp('8%'),
+    borderTopRightRadius: wp('8%'),
+    paddingStart: wp('5%'),
+    paddingEnd: wp('5%')
   }
 })

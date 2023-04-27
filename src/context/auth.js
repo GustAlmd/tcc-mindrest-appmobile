@@ -11,6 +11,7 @@ function AuthProvider({ children }){
     const [ user, setUser ] = useState(null);
     const navigation = useNavigation();
     const [ loading, setLoading ] = useState(true);
+    const [ loadingAuth, setLoadingAuth ] = useState(false);
 
     useEffect(()=>{
         async function loadStorage(){
@@ -28,6 +29,7 @@ function AuthProvider({ children }){
     }, []);
 
     async function signIn(email, password){
+        setLoadingAuth(true);
         await signInWithEmailAndPassword(auth, email, password)
           .then(async (value)=>{
             let uid = value.user.uid;
@@ -44,20 +46,24 @@ function AuthProvider({ children }){
                   };
                   setUser(dados);
                   storageUser(dados);
+                  setLoadingAuth(false);
                 }
                 else {
                   alert('Não foram encontrados dados para o email fornecido.');
+                  setLoadingAuth(false);
                 }
               })
           })
           .catch((error)=>{
             alert(error.code);
+            setLoadingAuth(false);
           })
       }
       
       
     //Cadastrar usuário
     async function signUp(data){
+      setLoadingAuth(true);
         await createUserWithEmailAndPassword(auth, data.email, data.password)
           .then(async (value) => {
             // Usuário criado com sucesso
@@ -74,6 +80,7 @@ function AuthProvider({ children }){
             .then(()=>{
                 alert("Cadastro realizado com sucesso!");
                 navigation.navigate('SignIn');
+                setLoadingAuth(false);
             })
           })
           .catch((error) => {
@@ -81,6 +88,7 @@ function AuthProvider({ children }){
             const errorCode = error.code;
             const errorMessage = error.message;
             alert(errorCode, errorMessage);
+            setLoadingAuth(false);
           });
       }
 
@@ -98,7 +106,7 @@ function AuthProvider({ children }){
       
       
     return(
-        <AuthContext.Provider value={ {signed: !!user, user, loading, signUp, signIn, signOut} }>
+        <AuthContext.Provider value={ {signed: !!user, user, loading, signUp, signIn, signOut, loadingAuth } }>
             {children}
         </AuthContext.Provider>
     );

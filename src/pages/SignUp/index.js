@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, } from 'react-native';
 import * as Animatable from 'react-native-animatable' 
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,7 +23,7 @@ export default function SignUp() {
   const {control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   })
-  const { signUp } = useContext(AuthContext);
+  const { signUp, loadingAuth } = useContext(AuthContext);
 
   function handleSignUp(data){
     signUp(data);
@@ -36,7 +36,7 @@ export default function SignUp() {
     <View style={styles.container}>
       <View style={styles.containerHeader}>
       <Animatable.Image
-        source={require('../../assets/logoSignUp.png')}
+        source={require('../../assets/logoSignUp2.png')}
         style={{width:'100%', height:'100%'}}
         resizeMod='contain'
         animation='fadeInDown'
@@ -143,7 +143,13 @@ export default function SignUp() {
         {errors.password && <Text style={styles.labelError}>{errors.password?.message}</Text>}
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit(handleSignUp)}>
-          <Text style={styles.buttonText}>Cadastrar</Text>
+          {
+            loadingAuth ? (
+              <ActivityIndicator size={22} color='#FFF'/>
+            ):(
+              <Text style={styles.buttonText}>Cadastrar</Text>
+            )
+          }
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.linkContainer,{marginTop:15}]} onPress={ () => navigation.navigate('SignIn')}>
@@ -159,12 +165,12 @@ export default function SignUp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#3a46e4'
+    backgroundColor: '#556aa9'
   },
   containerHeader:{
     width: wp('100%'),
     height: hp('30%'),
-    backgroundColor: '#3a46e4',
+    backgroundColor: '#556aa9',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -204,10 +210,11 @@ const styles = StyleSheet.create({
   button: {
     marginTop: hp('3%'),
     marginHorizontal: wp('8%'),
+    width: wp('75%'),
     paddingHorizontal: wp('25%'),
     paddingVertical: hp('1%'),
-    borderRadius: 10,
-    backgroundColor: '#3a46e4'
+    borderRadius: 50,
+    backgroundColor: '#556aa9'
   },
   buttonText: {
     color: '#fff',
@@ -241,6 +248,7 @@ const styles = StyleSheet.create({
   },
   linkContainer: {
     marginTop: hp('3%'),
+    marginBottom: hp('3%'),
     alignItems: 'center'
   },
   link: {

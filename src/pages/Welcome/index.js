@@ -42,7 +42,7 @@ export default function Welcome() {
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    backgroundColor:'#3a46e4'
+    backgroundColor:'#556aa9'
   },
   containerLogo:{
     flex:2,
@@ -69,9 +69,8 @@ const styles = StyleSheet.create({
   },
   button:{
     position: 'absolute',
-    backgroundColor:'#3a46e4',
+    backgroundColor:'#556aa9',
     borderRadius: 50,
-    paddingVertical: 8,
     paddingVertical: 8,
     width:'75%',
     alignSelf:"center",

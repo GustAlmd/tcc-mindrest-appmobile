@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { AuthContext } from '../../context/auth'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const ProfileScreen = () => {
   const { user, signOut } = useContext(AuthContext);
@@ -8,32 +9,19 @@ const ProfileScreen = () => {
   return (
 
     <View style={styles.container}>
-        <View style={styles.header}>
-            <Image source={require('../../assets/profile-pic.jpg')} style={styles.profilePic} />
-            <Text style={styles.name}>{user.name} {user.lastName}</Text>
-            <Text style={styles.email}>{user.email}</Text>
-        </View>
 
-        <View style={styles.content}>
-            <View style={styles.infoContainer}>
-                <Text style={styles.infoLabel}>Bio:</Text>
-                <Text style={styles.infoText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus in nisl dictum malesuada.</Text>
-            </View>
-            <View style={styles.infoContainer}>
-                <Text style={styles.infoLabel}>Location:</Text>
-                <Text style={styles.infoText}>New York, USA</Text>
-            </View>
-            <View style={styles.infoContainer}>
-                <Text style={styles.infoLabel}>Occupation:</Text>
-                <Text style={styles.infoText}>Software Developer</Text>
-            </View>
+        <Text style={styles.name}>{user.name} {user.lastName}</Text>
+        <Text style={styles.email}>{user.email}</Text>
 
-            <TouchableOpacity style={[styles.buttonSignOut]} onPress={() => signOut()}>
-                <Text style={styles.buttonText}>Deslogar</Text>
-            </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={[styles.buttonEdit]}>
+          <Text style={styles.textEdit}>Editar Perfil</Text>
+        </TouchableOpacity>
+           
+        <TouchableOpacity style={[styles.buttonSignOut]} onPress={() => signOut()}>
+          <Text style={styles.textLogout}>Sair da Conta</Text>
+        </TouchableOpacity>
+
     </View>
-        
   );
 };
 
@@ -41,68 +29,44 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  header: {
-    backgroundColor: '#d9d9d9',
-    padding: 24,
     alignItems: 'center',
-  },
-  profilePic: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 16,
+    justifyContent: 'center'
   },
   name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 8,
+    textAlign: 'center',
+    fontSize: 28,
+    marginTop: 25,
+    marginBottom: 5,
+    color: '#3a46e4'
   },
   email: {
-    fontSize: 16,
-    color: '#fff',
+    textAlign: 'center',
+    fontSize: 15,
+    marginTop: 1,
+    marginBottom: 25,
   },
-  content: {
-    flex: 1,
-    padding: 24,
-  },
-  infoContainer: {
-    marginBottom: 16,
-  },
-  infoLabel: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  infoText: {
-    fontSize: 16,
-  },
-  button:{
-    position: 'absolute',
-    backgroundColor:'#3a46e4',
-    borderRadius: 50,
-    paddingVertical: 8,
-    paddingVertical: 8,
-    width:'75%',
-    alignSelf:"center",
-    bottom:'30%',
-    alignItems:'center',
-    justifyContent:'center'
+  buttonEdit:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00b94a',
+    width: '90%',
+    height: 45,
+    borderRadius: 10,
+    marginBottom: 10
   },
   buttonSignOut:{
-    position: 'absolute',
-    backgroundColor:'#3a46e4',
-    borderRadius: 50,
-    paddingVertical: 8,
-    paddingVertical: 8,
-    width:'75%',
-    alignSelf:"center",
-    bottom:'30%',
-    alignItems:'center',
-    justifyContent:'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#c62c36',
+    width: '90%',
+    height: 45,
+    borderRadius: 10
   },
-  buttonText:{
+  textLogout:{
+    fontSize:22,
+    fontWeight:'bold'
+  },
+  textEdit:{
     fontSize:22,
     color:'#fff',
     fontWeight:'bold'
