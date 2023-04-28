@@ -18,12 +18,12 @@ const Notepad = () => {
 
     const [selectedButton, setSelectedButton] = useState('');
 
-    const handleButtonPress = (buttonId) => {
-        if (buttonId === selectedButton) {
+    const handleButtonPress = (emotionId) => {
+        if (emotionId === selectedButton) {
             setSelectedButton('');
         } else {
-            setSelectedButton(buttonId);
-            navigation.navigate('Write', { buttonId });
+            setSelectedButton(emotionId);
+            navigation.navigate('Write', { emotionId });
         }
     };
 
@@ -56,7 +56,7 @@ const Notepad = () => {
                 selectedDate={selectedDate}
                 onSelectDate={onSelectDate}
                 markedDates={[
-                    { date: '2023-04-27', dots: [{ color: '#ffa788' }] }
+                    { date: '2023-04-27', dots: [{ color: 'white' }] }
                 ]}
                 locale={{ name: 'pt', config: { days: daysInWeek, monthsShort: months } }} // definindo o locale em português
             />
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
         top: '5%'
     },
     roundButton: {
-        borderColor: 'gray',
+        borderColor: 'white',
         borderWidth: 1,
         height: 60,
         borderRadius: 80,

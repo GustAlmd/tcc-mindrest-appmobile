@@ -1,12 +1,16 @@
 import React from 'react';
-import { View, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Image, StyleSheet} from 'react-native';
 import Swiper from 'react-native-swiper';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const data = [
-  { image: '../../assets/Frase.png' },
-  { image: '../../assets/Frase2.png' },
-  { image: '../../assets/Frase3.png' },
-  { image: '../../assets/Frase4.png' },
+  { image: require('../../assets/Frase.png') },
+  { image: require('../../assets/Frase2.png') },
+  { image: require('../../assets/Frase3.png') },
+  { image: require('../../assets/Frase4.png') },
+  { image: require('../../assets/Frase5.png') },
+  { image: require('../../assets/Frase6.png') },
+  { image: require('../../assets/Frase7.png') },
 ];
 
 const SlideItem = ({ item }) => {
@@ -41,10 +45,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
+    width: wp('100%'),
+    height: hp('100%')
   },
   slideImage: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: '100%',
+    height: '100%',
     resizeMode: 'cover',
   },
 });

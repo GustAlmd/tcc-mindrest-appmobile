@@ -1,35 +1,88 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const Write = ({ route }) => {
-  const { buttonId } = route.params;
+  const { emotionId } = route.params;
+  const [selectedButtons, setSelectedButtons] = useState([]);
+  const handleButtonPress = (buttonId) => {
+    if (selectedButtons.includes(buttonId)) {
+      setSelectedButtons(selectedButtons.filter(id => id !== buttonId));
+    } else {
+      setSelectedButtons([...selectedButtons, buttonId]);
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.textHeader}>O que te deixou {buttonId} ?</Text>
+
+      <Text style={styles.textHeader}>O que te deixou {emotionId} ?</Text>
+
       <View style={styles.containerWrite}>
         <Text style={styles.textWrite}>Social</Text>
         <View style={styles.containerButtons}>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Família') && styles.selectedButton]} onPress={() => handleButtonPress('Família')} >
             <Text style={styles.textButton}>Família</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Amigos') && styles.selectedButton]} onPress={() => handleButtonPress('Amigos')}>
             <Text style={styles.textButton}>Amigos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Escola') && styles.selectedButton]} onPress={() => handleButtonPress('Escola')}>
             <Text style={styles.textButton}>Escola</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.containerButtons}>
-          <TouchableOpacity style={[styles.buttons, {flex: 2}]}>
+          <TouchableOpacity style={[styles.buttons, { flex: 2 }, selectedButtons.includes('Relacionamento') && styles.selectedButton]} onPress={() => handleButtonPress('Relacionamento')}>
             <Text style={styles.textButton}>Relacionamento</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Trabalho') && styles.selectedButton]} onPress={() => handleButtonPress('Trabalho')}>
             <Text style={styles.textButton}>Trabalho</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Outros') && styles.selectedButton]} onPress={() => handleButtonPress('Outros')}>
             <Text style={styles.textButton}>Outros</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.containerWrite}>
+        <Text style={styles.textWrite}>Saúde</Text>
+        <View style={styles.containerButtons}>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Fiquei Disposto') && styles.selectedButton]} onPress={() => handleButtonPress('Fiquei Disposto')}>
+            <Text style={styles.textButton}>Fiquei Disposto</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Dores Fracas') && styles.selectedButton]} onPress={() => handleButtonPress('Dores Fracas')}>
+            <Text style={styles.textButton}>Dores Fracas</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.containerButtons}>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Dores Fortes') && styles.selectedButton]} onPress={() => handleButtonPress('Dores Fortes')}>
+            <Text style={styles.textButton}>Dores Fortes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Fiquei Desanimado') && styles.selectedButton]} onPress={() => handleButtonPress('Fiquei Desanimado')}>
+            <Text style={styles.textButton}>Fiquei Desanimado</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.containerWrite}>
+        <Text style={styles.textWrite}>Alimentação</Text>
+        <View style={styles.containerButtons}>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Comi Bem') && styles.selectedButton]} onPress={() => handleButtonPress('Comi Bem')}>
+            <Text style={styles.textButton}>Comi Bem</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Comi Mal') && styles.selectedButton]} onPress={() => handleButtonPress('Comi Mal')}>
+            <Text style={styles.textButton}>Comi Mal</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.buttons, { flex: 2 }, selectedButtons.includes('Sem Fome') && styles.selectedButton]} onPress={() => handleButtonPress('Sem Fome')}>
+            <Text style={styles.textButton}>Sem Fome</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.containerButtons}>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Me Hidratei Bem') && styles.selectedButton]} onPress={() => handleButtonPress('Me Hidratei Bem')}>
+            <Text style={styles.textButton}>Me Hidratei Bem</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Me Hidratei Mal') && styles.selectedButton]} onPress={() => handleButtonPress('Me Hidratei Mal')}>
+            <Text style={styles.textButton}>Me Hidratei Mal</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -37,103 +90,48 @@ const Write = ({ route }) => {
       <View style={styles.containerWrite}>
         <Text style={styles.textWrite}>Sono</Text>
         <View style={styles.containerButtons}>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Família</Text>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Dormi Mal') && styles.selectedButton]} onPress={() => handleButtonPress('Dormi Mal')}>
+            <Text style={styles.textButton}>Dormi Mal</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Amigos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Escola</Text>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Dormi Bem') && styles.selectedButton]} onPress={() => handleButtonPress('Dormi Bem')}>
+            <Text style={styles.textButton}>Dormi Bem</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.containerButtons}>
-          <TouchableOpacity style={[styles.buttons, {flex: 2}]}>
-            <Text style={styles.textButton}>Relacionamento</Text>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Dormi Cedo') && styles.selectedButton]} onPress={() => handleButtonPress('Dormi Cedo')}>
+            <Text style={styles.textButton}>Dormi Cedo</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Trabalho</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Outros</Text>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Dormi Tarde') && styles.selectedButton]} onPress={() => handleButtonPress('Dormi Tarde')}>
+            <Text style={styles.textButton}>Dormi Tarde</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View style={styles.containerWrite}>
-        <Text style={styles.textWrite}>Social</Text>
+        <Text style={styles.textWrite}>Auto Cuidado</Text>
         <View style={styles.containerButtons}>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Família</Text>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Cuidei da Pele') && styles.selectedButton]} onPress={() => handleButtonPress('Cuidei da Pele')}>
+            <Text style={styles.textButton}>Cuidei da Pele</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Amigos</Text>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Cuidei do Cabelo') && styles.selectedButton]} onPress={() => handleButtonPress('Cuidei do Cabelo')}>
+            <Text style={styles.textButton}>Cuidei do Cabelo</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Escola</Text>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Não Me Cuidei') && styles.selectedButton]} onPress={() => handleButtonPress('Não Me Cuidei')}>
+            <Text style={styles.textButton}>Não Me Cuidei</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.containerButtons}>
-          <TouchableOpacity style={[styles.buttons, {flex: 2}]}>
-            <Text style={styles.textButton}>Relacionamento</Text>
+          <TouchableOpacity style={[styles.buttons, { flex: 2 }, selectedButtons.includes('Cuidei do Meu Corpo') && styles.selectedButton]} onPress={() => handleButtonPress('Cuidei do Meu Corpo')}>
+            <Text style={styles.textButton}>Cuidei do Meu Corpo</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Trabalho</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Outros</Text>
+          <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Descansei') && styles.selectedButton]} onPress={() => handleButtonPress('Descansei')}>
+            <Text style={styles.textButton}>Descansei</Text>
           </TouchableOpacity>
         </View>
-      </View>
 
-      <View style={styles.containerWrite}>
-        <Text style={styles.textWrite}>Social</Text>
-        <View style={styles.containerButtons}>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Família</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Amigos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Escola</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.containerButtons}>
-          <TouchableOpacity style={[styles.buttons, {flex: 2}]}>
-            <Text style={styles.textButton}>Relacionamento</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Trabalho</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Outros</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.containerWrite}>
-        <Text style={styles.textWrite}>Social</Text>
-        <View style={styles.containerButtons}>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Família</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Amigos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Escola</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.containerButtons}>
-          <TouchableOpacity style={[styles.buttons, {flex: 2}]}>
-            <Text style={styles.textButton}>Relacionamento</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Trabalho</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttons, {flex: 1}]}>
-            <Text style={styles.textButton}>Outros</Text>
+        <View style={styles.footer}>
+          <TouchableOpacity style={styles.button}>
+              <Text style={styles.textButton}>Continuar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -150,7 +148,7 @@ const styles = StyleSheet.create({
     height: hp('100%'),
   },
 
-  textHeader:{
+  textHeader: {
     paddingStart: wp('4%'),
     paddingTop: wp('5%'),
     fontSize: hp('2.5%'),
@@ -158,12 +156,12 @@ const styles = StyleSheet.create({
     color: 'white'
   },
 
-  containerWrite:{
-    borderBottomColor:'white',
+  containerWrite: {
+    borderBottomColor: 'white',
     border: 1
   },
 
-  textWrite:{
+  textWrite: {
     paddingStart: wp('4%'),
     paddingTop: wp('5%'),
     fontSize: hp('2%'),
@@ -171,7 +169,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
 
-  buttons:{
+  buttons: {
     height: hp('4.5%'),
     borderRadius: 20,
     backgroundColor: '#556aa9',
@@ -179,16 +177,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: hp('1%'),
   },
-  
-  containerButtons:{
+
+  containerButtons: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
   },
 
-  textButton:{
-    fontWeight:'bold',
-    color:'white'
+  textButton: {
+    fontWeight: 'bold',
+    color: 'white'
+  },
+
+  selectedButton: {
+    backgroundColor: '#a3a8d6',
+  },
+
+  footer:{
+    position: 'absolute',
+    bottom: 0,
+    width: wp('100%'),
+    height: hp('10%'),
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  button:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: wp('35%'),
+    height: hp('5%'),
+    borderRadius: 50,
+    backgroundColor: '#3c4383'
   }
 
 });

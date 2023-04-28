@@ -3,14 +3,14 @@ import { getAuth } from '@firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA3hdH0XvP6p-vchQ1cSFWn74RJ-syZhL8",
-  authDomain: "mindrest-bd.firebaseapp.com",
-  databaseURL: "https://mindrest-bd-default-rtdb.firebaseio.com",
-  projectId: "mindrest-bd",
-  storageBucket: "mindrest-bd.appspot.com",
-  messagingSenderId: "1092378769290",
-  appId: "1:1092378769290:web:e2889cbc0676ea73df3a73",
-  measurementId: "G-RQHZYEVB52"
+  apiKey: "AIzaSyDlIy0B3FZ2Usw8NSz9R9DpZ7QldUTHax8",
+  authDomain: "mindrest-appmobile.firebaseapp.com",
+  databaseURL: "https://mindrest-appmobile-default-rtdb.firebaseio.com",
+  projectId: "mindrest-appmobile",
+  storageBucket: "mindrest-appmobile.appspot.com",
+  messagingSenderId: "350068143520",
+  appId: "1:350068143520:web:0006cf5aec5987c76da0c5",
+  measurementId: "G-ZXTXE1SCYQ"
 };
 
 const app = initializeApp(firebaseConfig);
