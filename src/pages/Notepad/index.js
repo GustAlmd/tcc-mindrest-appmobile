@@ -4,6 +4,7 @@ import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment';
 import 'moment/locale/pt-br'; // importa o idioma português
 import { useNavigation } from '@react-navigation/native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const expressions = [
     { id: 'feliz', symbol: '😀' },
@@ -44,7 +45,7 @@ const Notepad = () => {
                 daySelectionAnimation={{ type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'white' }}
                 style={{ height: 100, paddingTop: 10, paddingBottom: 5 }}
                 calendarHeaderStyle={{ color: 'white' }}
-                calendarColor={'#8896d7'}
+                calendarColor={'#556aa9'}
                 dateNumberStyle={{ color: 'white' }}
                 dateNameStyle={{ color: 'white' }}
                 highlightDateNumberStyle={{ color: 'yellow' }}
@@ -59,19 +60,22 @@ const Notepad = () => {
                 ]}
                 locale={{ name: 'pt', config: { days: daysInWeek, monthsShort: months } }} // definindo o locale em português
             />
-            <View style={styles.emoticons}>
-                {expressions.map(({ id, symbol}) => (
-                    <TouchableOpacity
-                        key={id}
-                        style={[
-                            styles.roundButton,
-                            selectedButton === id && styles.clickedButton,
-                        ]}
-                        onPress={() => handleButtonPress(id)}
-                    >
-                        <Text style={styles.buttonText}>{symbol}</Text>
-                    </TouchableOpacity>
-                ))}
+            <View style={styles.write}>
+                <Text style={styles.textEmoticons}>Como se sente hoje?</Text>
+                <View style={styles.emoticons}>
+                    {expressions.map(({ id, symbol}) => (
+                        <TouchableOpacity
+                            key={id}
+                            style={[
+                                styles.roundButton,
+                                selectedButton === id,
+                            ]}
+                            onPress={() => handleButtonPress(id)}
+                        >
+                            <Text style={styles.buttonText}>{symbol}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
             </View>
         </View>
     );
@@ -81,6 +85,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    write:{
+        backgroundColor: '#8896d7',
+        flex: 1,
+        width: wp('100%'),
+        height: hp('100%'),
+    },
+    textEmoticons:{
+        paddingStart: wp('4%'),
+        paddingTop: wp('5%'),
+        fontSize: hp('2.5%'),
+        fontWeight: 'bold',
+        color: 'white'
+    },
     emoticons: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
@@ -88,9 +105,11 @@ const styles = StyleSheet.create({
         top: '5%'
     },
     roundButton: {
+        borderColor: 'gray',
+        borderWidth: 1,
         height: 60,
-        borderRadius: 30,
-        backgroundColor: 'white',
+        borderRadius: 80,
+        backgroundColor: '#556aa9',
         justifyContent: 'center',
         alignItems: 'center',
         shadowColor: '#8896d7',
@@ -106,9 +125,6 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 30,
         fontWeight: 'bold',
-    },
-    clickedButton: {
-        backgroundColor: '#8896d7',
     },
 });
 
