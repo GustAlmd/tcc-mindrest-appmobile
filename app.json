@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "teste-app",
-    "slug": "teste-app",
+    "name": "mindrest-appmobile",
+    "slug": "mindrest-appmobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.gustalmd.testeapp"
+      "package": "com.gustalmd.mindrest-appmobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
