@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 const SelectButtons = ({ route }) => {
+  const navigation = useNavigation();
   const { emotionId } = route.params;
   const [selectedButtons, setSelectedButtons] = useState([]);
   const handleButtonPress = (buttonId) => {
@@ -16,11 +19,21 @@ const SelectButtons = ({ route }) => {
   return (
     <View style={styles.container}>
 
-      <Text style={styles.textHeader}>O que te deixou {emotionId} ?</Text>
+      <View style={styles.header}>
+
+        <Text style={styles.textHeader}>O que te deixou {emotionId} ?</Text>
+
+        <View style={styles.touchableContainer}>
+          <TouchableOpacity onPress={() => { navigation.navigate('Notepad');}}>
+            <Ionicons name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'} size={24} color="#556aa9" />
+          </TouchableOpacity>
+        </View>
+
+      </View>
 
       <ScrollView style={styles.scroll}>
 
-        <View style={[styles.containerWrite, {marginTop: hp('1%')}]}>
+        <View style={[styles.containerWrite, { marginTop: hp('1%') }]}>
           <Text style={styles.textWrite}>Social</Text>
           <View style={styles.containerButtons}>
             <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Família') && styles.selectedButton]} onPress={() => handleButtonPress('Família')} >
@@ -135,7 +148,7 @@ const SelectButtons = ({ route }) => {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.button} onPress={() =>console.log(selectedButtons)}>
+        <TouchableOpacity style={styles.button} onPress={() => console.log(selectedButtons)}>
           <Text style={styles.textButton}>Continuar</Text>
         </TouchableOpacity>
       </View>
@@ -152,28 +165,28 @@ const styles = StyleSheet.create({
     height: hp('100%'),
   },
 
-  scroll:{
-    flex:1,
+  scroll: {
+    flex: 1,
     marginBottom: hp('6%')
   },
 
   textHeader: {
-    marginStart: wp('4%'),
-    marginBottom: hp('1%'),
-    marginTop: hp('2%'),
     fontSize: hp('2.5%'),
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
+    marginStart: wp('4%'),
   },
 
   containerWrite: {
     borderBottomColor: 'white',
+    marginStart: wp('2%'),
+    marginEnd: wp('2%'),
     border: 1,
     marginTop: hp('2%'),
   },
 
   textWrite: {
-    marginStart: wp('4%'),
+    marginStart: wp('2%'),
     fontSize: hp('2%'),
     fontWeight: 'bold',
     color: 'white'
@@ -220,7 +233,21 @@ const styles = StyleSheet.create({
     height: hp('5%'),
     borderRadius: 50,
     backgroundColor: '#3c4383'
-  }
+  },
+
+  header: {
+    height: hp('5%'),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+
+  },
+
+  touchableContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+    marginEnd: wp('4%')
+  },
 
 });
 
