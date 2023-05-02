@@ -23,7 +23,7 @@ const Notepad = () => {
             setSelectedButton('');
         } else {
             setSelectedButton(emotionId);
-            navigation.navigate('Write', { emotionId });
+            navigation.navigate('SelectButtons', { emotionId });
         }
     };
 
@@ -60,7 +60,8 @@ const Notepad = () => {
                 ]}
                 locale={{ name: 'pt', config: { days: daysInWeek, monthsShort: months } }} // definindo o locale em português
             />
-            <View style={styles.write}>
+
+            <View style={styles.buttons}>
                 <Text style={styles.textEmoticons}>Como se sente hoje?</Text>
                 <View style={styles.emoticons}>
                     {expressions.map(({ id, symbol}) => (
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    write:{
+    buttons:{
         backgroundColor: '#8896d7',
         flex: 1,
         width: wp('100%'),
@@ -106,25 +107,19 @@ const styles = StyleSheet.create({
     },
     roundButton: {
         borderColor: 'white',
-        borderWidth: 1,
-        height: 60,
-        borderRadius: 80,
+        borderWidth: wp('0.2'),
+        height: hp('7%'),
+        borderRadius: 90,
         backgroundColor: '#556aa9',
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#8896d7',
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.29,
-        shadowRadius: 4.65,
-        elevation: 7,
-        paddingHorizontal: 24,
+        shadowOpacity: 0.5,
+        shadowRadius: 5.65,
+        elevation: 9,
+        paddingHorizontal: wp('6%'),
     },
     buttonText: {
-        fontSize: 30,
-        fontWeight: 'bold',
+        fontSize: wp('8%'),
     },
 });
 

@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     width: wp('100%'),
     height: hp('30%'),
     flex: 1,
-    marginTop: hp('2%'),
+    marginTop: hp('3%'),
     marginBottom: hp('6%'),
     paddingStart: wp('5%'),
     paddingEnd: wp('5%')
