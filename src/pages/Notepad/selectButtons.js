@@ -6,8 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 
 const SelectButtons = ({ route }) => {
   const navigation = useNavigation();
-  const { emotionId } = route.params;
   const [selectedButtons, setSelectedButtons] = useState([]);
+  const { emotionId, symbol } = route.params;
+  
+  const buttonContinue = (selectedButtons, emotionId, symbol) => {
+      navigation.navigate('Write', { selectedButtons, emotionId, symbol });
+  };
+
   const handleButtonPress = (buttonId) => {
     if (selectedButtons.includes(buttonId)) {
       setSelectedButtons(selectedButtons.filter(id => id !== buttonId));
@@ -148,7 +153,7 @@ const SelectButtons = ({ route }) => {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.button} onPress={() => console.log(selectedButtons)}>
+        <TouchableOpacity style={styles.button} onPress={() => buttonContinue(selectedButtons, emotionId, symbol)}>
           <Text style={styles.textButton}>Continuar</Text>
         </TouchableOpacity>
       </View>

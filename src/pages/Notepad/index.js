@@ -18,12 +18,12 @@ const Notepad = () => {
 
     const [selectedButton, setSelectedButton] = useState('');
 
-    const handleButtonPress = (emotionId) => {
+    const handleButtonPress = (emotionId, symbol) => {
         if (emotionId === selectedButton) {
             setSelectedButton('');
         } else {
             setSelectedButton(emotionId);
-            navigation.navigate('SelectButtons', { emotionId });
+            navigation.navigate('SelectButtons', { emotionId, symbol });
         }
     };
 
@@ -64,14 +64,14 @@ const Notepad = () => {
             <View style={styles.buttons}>
                 <Text style={styles.textEmoticons}>Como se sente hoje?</Text>
                 <View style={styles.emoticons}>
-                    {expressions.map(({ id, symbol}) => (
+                    {expressions.map(({ id, symbol }) => (
                         <TouchableOpacity
                             key={id}
                             style={[
                                 styles.roundButton,
                                 selectedButton === id,
                             ]}
-                            onPress={() => handleButtonPress(id)}
+                            onPress={() => handleButtonPress(id, symbol)}
                         >
                             <Text style={styles.buttonText}>{symbol}</Text>
                         </TouchableOpacity>
@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    buttons:{
+    buttons: {
         backgroundColor: '#8896d7',
         flex: 1,
         width: wp('100%'),
         height: hp('100%'),
     },
-    textEmoticons:{
+    textEmoticons: {
         paddingStart: wp('4%'),
         paddingTop: wp('5%'),
         fontSize: hp('2.5%'),
