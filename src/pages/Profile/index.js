@@ -28,7 +28,7 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#8896d7',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     marginTop: 25,
     marginBottom: 5,
-    color: '#3a46e4'
+    color: '#fff'
   },
   email: {
     textAlign: 'center',

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable'
 import { useNavigation } from '@react-navigation/native';
@@ -9,8 +9,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 export default function SignIn() {
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { signIn, loadingAuth } = useContext(AuthContext);
 
@@ -20,70 +20,67 @@ export default function SignIn() {
     setShowPassword(!showPassword);
   }
 
-  function handleLogin(){
+  function handleLogin() {
     signIn(email, password);
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="height">
       <View style={styles.containerHeader}>
         <Animatable.Text animation='fadeInLeft' delay={500} style={styles.message}>Bem-vindo(a)</Animatable.Text>
         <Animatable.Image
           source={require('../../assets/vetorSignIn2.png')}
-          style={{ width: '100%', height: '100%', alignSelf:'center' }}
+          style={{ width: '100%', height: '100%', alignSelf: 'center' }}
           resizeMod='contain'
           animation='fadeInUp'
         />
       </View>
-      <KeyboardAwareScrollView style={styles.KeyboardAwareScrollView}>
-        <Animatable.View animation='fadeInUp' style={styles.containerForm}>
-          <Text style={styles.title}>Email</Text>
-          <TextInput
-            value={email}
-            onChangeText={value => setEmail(value)}
-            placeholder='Digite seu email...'
-            style={styles.input}
-            keyboardType="email-address"
-          />
+      <ScrollView style={styles.containerForm}>
+        <Text style={styles.title}>Email</Text>
+        <TextInput
+          value={email}
+          onChangeText={value => setEmail(value)}
+          placeholder='Digite seu email...'
+          style={styles.input}
+          keyboardType="email-address"
+        />
 
-          <View>
-            <Text style={styles.title}>Senha</Text>
-            <View style={styles.passwordInputContainer}>
-              <TextInput
-                value={password}
-                onChangeText={value => setPassword(value)}
-                secureTextEntry={!showPassword}
-                placeholder='Digite sua senha...'
-                style={[styles.input, styles.passwordInput]}
-              />
-              <TouchableOpacity style={styles.passwordToggle} onPress={togglePasswordVisibility}>
-                <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color='#a1a1a1' />
-              </TouchableOpacity>
-            </View>
+        <View>
+          <Text style={styles.title}>Senha</Text>
+          <View style={styles.passwordInputContainer}>
+            <TextInput
+              value={password}
+              onChangeText={value => setPassword(value)}
+              secureTextEntry={!showPassword}
+              placeholder='Digite sua senha...'
+              style={[styles.input, styles.passwordInput]}
+            />
+            <TouchableOpacity style={styles.passwordToggle} onPress={togglePasswordVisibility}>
+              <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color='#a1a1a1' />
+            </TouchableOpacity>
           </View>
+        </View>
 
-          <TouchableOpacity style={styles.button}  onPress={() => handleLogin()}>
-            {
-              loadingAuth ? (
-                <ActivityIndicator size={22} color='#FFF'/>
-              ) : (
-                <Text style={styles.buttonText}>Entrar</Text>
-              )
-            }
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => handleLogin()}>
+          {
+            loadingAuth ? (
+              <ActivityIndicator size={22} color='#FFF' />
+            ) : (
+              <Text style={styles.buttonText}>Entrar</Text>
+            )
+          }
+        </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.buttonRegister, { marginTop: '5%' }]}>
-            <Text style={styles.registerText}>Esqueceu sua senha?</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={[styles.buttonRegister, { marginTop: '5%' }]}>
+          <Text style={styles.registerText}>Esqueceu sua senha?</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.buttonRegister, { marginTop: '2%' }]} onPress={() => navigation.navigate('SignUp')}>
-            <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={[styles.buttonRegister, { marginTop: '2%' }]} onPress={() => navigation.navigate('SignUp')}>
+          <Text style={styles.registerText}>Não possui uma conta? Cadastre-se</Text>
+        </TouchableOpacity>
 
-        </Animatable.View>
-      </KeyboardAwareScrollView>
-
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -93,8 +90,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#556aa9'
   },
   containerHeader: {
-    width: wp('100%'),
-    height: hp('30%'),
     flex: 1,
     marginTop: hp('3%'),
     marginBottom: hp('6%'),
@@ -135,7 +130,7 @@ const styles = StyleSheet.create({
   passwordToggle: {
     position: 'absolute',
     right: 0,
-    paddingBottom: hp('1%')
+    paddingBottom: hp('2%')
   },
   button: {
     backgroundColor: '#556aa9',
@@ -166,7 +161,7 @@ const styles = StyleSheet.create({
     right: wp('2%'),
     zIndex: 1
   },
-  KeyboardAwareScrollView:{
+  KeyboardAwareScrollView: {
     backgroundColor: '#FFF',
     flex: 1,
     borderTopLeftRadius: wp('8%'),

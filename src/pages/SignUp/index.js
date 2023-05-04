@@ -36,13 +36,13 @@ export default function SignUp() {
     <View style={styles.container}>
       <View style={styles.containerHeader}>
       <Animatable.Image
-        source={require('../../assets/logoSignUp2.png')}
+        source={require('../../assets/logo_transparent.png')}
         style={{width:'100%', height:'100%'}}
         resizeMod='contain'
         animation='fadeInDown'
       />
       </View>
-      <KeyboardAwareScrollView style={styles.containerForm} contentContainerStyle={{alignItems:'center'}}>
+      <KeyboardAwareScrollView style={styles.containerForm} >
         <Text style={styles.title}>Crie sua conta</Text>
         <Text style={styles.subtitle}>Crie uma conta para que possa relaxar e descansar sua mente</Text>
 
@@ -169,14 +169,14 @@ const styles = StyleSheet.create({
   },
   containerHeader:{
     width: wp('100%'),
-    height: hp('30%'),
+    height: hp('20%'),
     backgroundColor: '#556aa9',
     justifyContent: 'center',
     alignItems: 'center'
   },
   containerForm: {
     backgroundColor: '#FFF',
-    height: '35%',
+    height: hp('80%'),
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingStart: '5%',
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: hp('1%'),
-    marginBottom: hp('1%'),
+    marginBottom: hp('2%'),
     marginHorizontal: wp('8%'),
     paddingHorizontal: wp('3%'),
     paddingVertical: hp('1.5%'),

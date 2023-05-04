@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Image, StyleSheet} from 'react-native';
+import { View, Image, StyleSheet, Text, } from 'react-native';
 import Swiper from 'react-native-swiper';
+import { Ionicons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const data = [
@@ -25,6 +26,13 @@ const SlideItem = ({ item }) => {
 const Slide = () => {
   return (
     <View style={styles.container}>
+      <View
+        style={styles.header}>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
+          MindRest
+        </Text>
+        <Ionicons name="share-outline" style={{ fontSize: 25, color: 'white' }} />
+      </View>
       <Swiper
         showsButtons={false}
         showsPagination={false}
@@ -46,8 +54,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
     width: wp('100%'),
-    height: hp('100%')
+    height: hp('100%'),
+    position: 'relative',
   },
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    zIndex: 1,
+    padding: hp('1%'),
+    alignItems: 'center'
+  },
+
   slideImage: {
     width: '100%',
     height: '100%',
