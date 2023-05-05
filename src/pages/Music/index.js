@@ -13,15 +13,30 @@ export default function Music() {
     const [sound, setSound] = useState(null);
     const [songIndex, setSongIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [progress, setProgress] = useState(0); // novo estado para controlar o valor da barra de progresso
+
+    const soundRef = useRef(null); // novo ref para obter uma referência ao objeto de áudio
+
 
     useEffect(() => {
         loadAudio();
     }, []);
 
+    
+    useEffect(() => { // novo useEffect para atualizar o valor da barra de progresso
+        const interval = setInterval(async () => {
+            const status = await sound.getStatusAsync();
+            const progress = status.positionMillis / status.durationMillis;
+            setProgress(progress);
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [sound]);
+
     async function loadAudio() {
         try {
             const { sound } = await Audio.Sound.createAsync(songs[songIndex].url);
             setSound(sound);
+            soundRef.current = sound; // atribui o objeto de áudio ao ref
         } catch (error) {
             console.log(error);
         }
@@ -29,92 +44,56 @@ export default function Music() {
 
     async function playSound() {
         try {
-            await sound.playAsync();
+            await soundRef.current.playAsync();
             setIsPlaying(true);
         } catch (error) {
             console.log(error);
         }
     }
-
+    
     async function pauseSound() {
         try {
-            await sound.pauseAsync();
+            await soundRef.current.pauseAsync();
             setIsPlaying(false);
         } catch (error) {
             console.log(error);
         }
     }
-
+    
     async function handleNext() {
-        if (sound) {
-            await sound.unloadAsync();
+        if (soundRef.current) {
+            await soundRef.current.unloadAsync();
             setIsPlaying(false);
         }
         const nextSongIndex = songIndex + 1 >= songs.length ? 0 : songIndex + 1;
         setSongIndex(nextSongIndex);
         const { sound: nextSound } = await Audio.Sound.createAsync(songs[nextSongIndex].url);
         setSound(nextSound);
+        soundRef.current = nextSound; // atribui o objeto de áudio ao ref
         playSound();
     }
-
+    
     async function handlePrevious() {
-        if (sound) {
-            await sound.unloadAsync();
+        if (soundRef.current) {
+            await soundRef.current.unloadAsync();
             setIsPlaying(false);
         }
         const previousSongIndex = songIndex - 1 < 0 ? songs.length - 1 : songIndex - 1;
         setSongIndex(previousSongIndex);
         const { sound: nextSound } = await Audio.Sound.createAsync(songs[previousSongIndex].url);
         setSound(nextSound);
+        soundRef.current = nextSound; // atribui o objeto de áudio ao ref
         playSound();
     }
 
-    const scrollX = useRef(new Animated.Value(0)).current;
 
-    useEffect(() => {
-        scrollX.addListener(({ value }) => {
-            // console.log(`ScrollX : ${value} | Devide Width: ${width}`);
-            const index = Math.round(value / width);
-            setSongIndex(index);
-            // console.log(index);
-        });
-    }, [])
-
-    const renderSongs = ({ item, index }) => {
-        return (
-            <Animated.View style={styles.mainImageWrapper}>
-                <View style={[styles.imageWrapper, styles.elevation]}>
-                    <Image source={item.artwork} style={styles.musicImage} />
-                </View>
-            </Animated.View>
-
-        )
-    }
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.maincontainer}>
-                {/* image */}
 
-                <Animated.FlatList
-                    renderItem={renderSongs}
-                    data={songs}
-                    keyExtractor={item => item.id}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    scrollEventThrottle={16}
-                    onScroll={Animated.event(
-                        [
-                            {
-                                nativeEvent: {
-                                    contentOffset: { x: scrollX },
-                                }
-                            }
-                        ],
-                        { useNativeDriver: true },
-                    )}
-                />
+                {/* image */}
+                <Image style={styles.artwork} source={songs[songIndex].artwork } />
 
                 {/* Song Content */}
                 <View>
@@ -126,9 +105,9 @@ export default function Music() {
                 <View>
                     <Slider
                         style={styles.progressBar}
-                        value={10}
+                        value={progress}
                         minimumValue={0}
-                        maximumValue={100}
+                        maximumValue={1}
                         thumbTintColor="#FFFFFF"
                         minimumTrackTintColor="#FFFFFF"
                         maximumTrackTintColor="#000000"
@@ -232,6 +211,14 @@ const styles = StyleSheet.create({
 
     },
 
+    artwork: {
+        width: 300,
+        height: 300,
+        borderRadius: 150,
+        marginBottom: 25,
+        marginTop: 35
+      },  
+    
     songTitle: {
         fontSize: 18,
         fontWeight: '600',
