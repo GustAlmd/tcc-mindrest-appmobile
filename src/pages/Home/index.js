@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text, } from 'react-native';
+import { View, Image, StyleSheet, Text, Share } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { Ionicons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -24,6 +24,18 @@ const SlideItem = ({ item }) => {
 };
 
 const Slide = () => {
+
+  const shareImage = async () => {
+    try {
+      await Share.share({
+        message: 'Confira essa imagem incrível!',
+        url: data[0].image.uri,
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  ''
   return (
     <View style={styles.container}>
       <View
@@ -31,7 +43,10 @@ const Slide = () => {
         <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
           MindRest
         </Text>
-        <Ionicons name="share-outline" style={{ fontSize: 25, color: 'white' }} />
+        <Ionicons name="share-outline"
+          onPress={shareImage}
+          style={{ fontSize: 25, color: 'white' }}
+        />
       </View>
       <Swiper
         showsButtons={false}

@@ -6,71 +6,73 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 const ProfileScreen = () => {
   const { user, signOut } = useContext(AuthContext);
 
+  const [url, setUrl] = useState(null);
+
   return (
 
     <View style={styles.container}>
+      <TouchableOpacity style={styles.header} />
 
-        <Text style={styles.name}>{user.name} {user.lastName}</Text>
-        <Text style={styles.email}>{user.email}</Text>
-
-        <TouchableOpacity style={[styles.buttonEdit]}>
-          <Text style={styles.textEdit}>Editar Perfil</Text>
-        </TouchableOpacity>
-           
-        <TouchableOpacity style={[styles.buttonSignOut]} onPress={() => signOut()}>
-          <Text style={styles.textLogout}>Sair da Conta</Text>
-        </TouchableOpacity>
+      {
+        url ?
+          (
+            <TouchableOpacity style={styles.uploadButton}>
+              <Text style={styles.uploadText}>+</Text>
+              <Image
+                style={styles.avatar}
+                source={{ uri: url }}
+              />
+            </TouchableOpacity>
+          ) :
+          (
+            <TouchableOpacity style={styles.uploadButton}>
+              <Text style={styles.uploadText}>+</Text>
+            </TouchableOpacity>
+          )
+      }
 
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#8896d7',
+  container:{
+    flex:1,
     alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: '#8896d7'
+
   },
-  name: {
-    textAlign: 'center',
-    fontSize: 28,
-    marginTop: 25,
-    marginBottom: 5,
-    color: '#fff'
+
+  header:{
+
   },
-  email: {
-    textAlign: 'center',
-    fontSize: 15,
-    marginTop: 1,
-    marginBottom: 25,
-  },
-  buttonEdit:{
+
+  uploadButton:{
+    marginTop: '20%',
+    backgroundColor: '#fff',
+    width: 165,
+    height: 165,
+    borderRadius: 90,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00b94a',
-    width: '90%',
-    height: 45,
-    borderRadius: 10,
-    marginBottom: 10
+    zIndex: 5
   },
-  buttonSignOut:{
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#c62c36',
-    width: '90%',
-    height: 45,
-    borderRadius: 10
+
+  uploadText:{
+    zIndex: 9,
+    position: 'absolute',
+    fontSize: 55,
+    color: '#e52246',
+    opacity: 0.4
   },
-  textLogout:{
-    fontSize:22,
-    fontWeight:'bold'
-  },
-  textEdit:{
-    fontSize:22,
-    color:'#fff',
-    fontWeight:'bold'
+
+  avatar:{
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    opacity: 0.9
   }
-});
+
+})
 
 export default ProfileScreen;

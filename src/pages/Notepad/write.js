@@ -6,8 +6,16 @@ import { Ionicons } from "@expo/vector-icons";
 
 const Write = ({ route }) => {
   const navigation = useNavigation();
-  const [dailyRoutine, setDailyRoutine] = useState('')
+  const [isFocused, setIsFocused] = useState(false);
+  const [todayActivity, setTodayActivity] = useState('');
+  const [todayFeelings, setTodayFeelings] = useState('');
+  const [todayThoughts, setTodayThoughts] = useState('');
+  const [todayLearn, setTodayLearn] = useState('');
+  const [todayGrateful, setTodayGrateful] = useState('');
   const { selectedButtons, emotionId, symbol } = route.params;
+
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
 
   const currentDate = new Date();
   const options = {
@@ -62,7 +70,7 @@ const Write = ({ route }) => {
                 ))}
               </View>
 
-              <TouchableOpacity style={styles.buttonSwitch}>
+              <TouchableOpacity style={styles.buttonSwitch} onPress={() => buttonBack(emotionId, symbol)}>
                 <Text style={styles.textSwitch}>Mudar</Text>
               </TouchableOpacity>
 
@@ -71,17 +79,60 @@ const Write = ({ route }) => {
         </View>
 
         <View style={styles.containerWrite}>
+          <Text style={styles.questionText}>Como foi o seu dia?</Text>
+          <TextInput
+            style={[styles.input, isFocused && styles.inputFocused, {textAlignVertical: 'top',}]}
+            placeholder="Hoje eu..."
+            onChangeText={(text) => setTodayActivity(text)}
+            value={todayActivity}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            numberOfLines={5}
+            maxHeight={100}
+            multiline={true}
+          />
 
-          <View style={styles.containerInputs}>
-            <Text style={styles.title}>Como foi o seu dia?</Text>
-            <TextInput
-              value={dailyRoutine}
-              onChangeText={value => setDailyRoutine(value)}
-              placeholder='Hoje eu...'
-              style={styles.input}
-            />
-          </View>
+          <Text style={styles.questionText}>Quais emoções e sentimentos gerou em você?</Text>
+          <TextInput
+            style={[styles.input, isFocused && styles.inputFocused]}
+            placeholder="Resposta..."
+            onChangeText={(text) => setTodayFeelings(text)}
+            value={todayFeelings}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
 
+          <Text style={styles.questionText}>Quais pensamentos estiveram mais presentes hoje?</Text>
+          <TextInput
+            style={[styles.input, isFocused && styles.inputFocused]}
+            placeholder="Resposta..."
+            onChangeText={(text) => setTodayThoughts(text)}
+            value={todayThoughts}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+
+          <Text style={styles.questionText}>O que você aprendeu hoje?</Text>
+          <TextInput
+            style={[styles.input, isFocused && styles.inputFocused]}
+            placeholder="Resposta..."
+            onChangeText={(text) => setTodayLearn(text)}
+            value={todayLearn}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+
+          <Text style={styles.questionText}>Pelo o que você é grato(a) hoje?</Text>
+          <TextInput
+            style={[styles.input, isFocused && styles.inputFocused]}
+            placeholder="Resposta..."
+            onChangeText={(text) => setTodayGrateful(text)}
+            value={todayGrateful}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            maxHeight={80}
+            multiline={true}
+          />
         </View>
 
       </ScrollView>
@@ -165,7 +216,8 @@ const styles = StyleSheet.create({
   emoticons: {
     paddingRight: wp('5%'),
     paddingLeft: wp('5%'),
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 
   roundButton: {
@@ -184,25 +236,28 @@ const styles = StyleSheet.create({
   },
 
   selectedOptions: {
-    backgroundColor: 'gray',
-    height: hp('4%'),
+    backgroundColor: '#a3a8d6',
+    height: hp('4.5%'),
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: wp('2%'),
-    padding: wp('2%'),
+    padding: wp('4%'),
     borderRadius: 30,
     margin: wp('0.5%'),
   },
 
   buttonSwitch: {
     backgroundColor: '#556aa9',
-    width: wp('14%'),
+    width: wp('18%'),
     borderRadius: 50,
-    paddingVertical: wp('2%'),
+    paddingVertical: wp('3%'),
     marginTop: hp('1%'),
+    justifyContent: 'center',
     alignItems: 'center',
   },
 
   textSwitch: {
-    color: 'white',
+    color: '#fcfcfc',
   },
 
   textOptions: {
@@ -217,28 +272,31 @@ const styles = StyleSheet.create({
 
   containerWrite: {
     flex: 1,
-    top: hp('4%')
+    padding: hp('2.5%'),
+    justifyContent: 'center',
   },
-
-  containerInputs: {
-    flex: 1,
-    paddingStart: wp('5%'),
-    paddingEnd: wp('5%')
-  },
-
   input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: 'white',
-    height: hp('10%'),
-    fontSize: hp('2%')
+    backgroundColor: '#556aa9',
+    borderWidth: wp('0.3%'),
+    borderColor: 'gray',
+    borderRadius: 4,
+    padding: hp('1.2%'),
+    marginVertical: wp('3.5%'),
+    fontSize: hp('2%'),
+    color: '#333',
+  },
+  questionText: {
+    fontSize: hp('2%'),
+    color: 'white',
+    fontWeight: 'bold',
+    marginBottom: hp('0.5%'),
+    marginTop: hp('2%'),
   },
 
-  title: {
-    fontSize: hp('2%'),
-    marginBottom: hp('1%'),
-    fontWeight: 'bold'
+  inputFocused: {
+    color: 'white',
   },
+
 
 });
 

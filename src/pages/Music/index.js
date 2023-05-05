@@ -1,21 +1,80 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Dimensions, Image, Animated } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Dimensions, Image, Animated, FlatList } from 'react-native';
 import Slider from "@react-native-community/slider";
 import { Ionicons } from "@expo/vector-icons";
 import songs from "./model/data";
+import { Audio } from 'expo-av';
+
 
 const { width, height } = Dimensions.get('window');
 
 export default function Music() {
 
+    const [sound, setSound] = useState(null);
     const [songIndex, setSongIndex] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    useEffect(() => {
+        loadAudio();
+    }, []);
+
+    async function loadAudio() {
+        try {
+            const { sound } = await Audio.Sound.createAsync(songs[songIndex].url);
+            setSound(sound);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function playSound() {
+        try {
+            await sound.playAsync();
+            setIsPlaying(true);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function pauseSound() {
+        try {
+            await sound.pauseAsync();
+            setIsPlaying(false);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function handleNext() {
+        if (sound) {
+            await sound.unloadAsync();
+            setIsPlaying(false);
+        }
+        const nextSongIndex = songIndex + 1 >= songs.length ? 0 : songIndex + 1;
+        setSongIndex(nextSongIndex);
+        const { sound: nextSound } = await Audio.Sound.createAsync(songs[nextSongIndex].url);
+        setSound(nextSound);
+        playSound();
+    }
+
+    async function handlePrevious() {
+        if (sound) {
+            await sound.unloadAsync();
+            setIsPlaying(false);
+        }
+        const previousSongIndex = songIndex - 1 < 0 ? songs.length - 1 : songIndex - 1;
+        setSongIndex(previousSongIndex);
+        const { sound: nextSound } = await Audio.Sound.createAsync(songs[previousSongIndex].url);
+        setSound(nextSound);
+        playSound();
+    }
 
     const scrollX = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         scrollX.addListener(({ value }) => {
             // console.log(`ScrollX : ${value} | Devide Width: ${width}`);
-            const index = Math.round( value / width);
+            const index = Math.round(value / width);
             setSongIndex(index);
             // console.log(index);
         });
@@ -48,12 +107,12 @@ export default function Music() {
                     onScroll={Animated.event(
                         [
                             {
-                                nativeEvent:{
-                                    contentOffset : {x : scrollX}, 
+                                nativeEvent: {
+                                    contentOffset: { x: scrollX },
                                 }
                             }
                         ],
-                        {useNativeDriver: true},
+                        { useNativeDriver: true },
                     )}
                 />
 
@@ -84,19 +143,26 @@ export default function Music() {
 
                 {/* music controls */}
                 <View style={styles.musicControlsContainer}>
-                    <TouchableOpacity onPress={() => { }}>
+                    <TouchableOpacity onPress={() => handlePrevious()}>
                         <Ionicons name="play-skip-back-outline" size={35} color="#ffffff" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { }}>
-                        <Ionicons name="ios-pause-circle" size={70} color="#888888" />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => { }}>
+                    {isPlaying ? (
+                        <TouchableOpacity style={styles.controlButton} onPress={() => pauseSound()}>
+                            <Ionicons name="ios-pause-circle" size={70} color="#888888" />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity style={styles.controlButton} onPress={() => playSound()}>
+                            <Ionicons name="ios-play-circle" size={70} color="#888888" />
+                        </TouchableOpacity>
+                    )}
+                    <TouchableOpacity onPress={() => handleNext()}>
                         <Ionicons name="play-skip-forward-outline" size={35} color="#ffffff" />
                     </TouchableOpacity>
                 </View>
             </View>
+
+
         </SafeAreaView>
     )
 }
@@ -111,6 +177,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: 10
     },
 
     bottomContainer: {
@@ -161,7 +228,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '300',
         textAlign: 'center',
-        color: '#EEEEEE'
+        color: '#EEEEEE',
+
     },
 
     songTitle: {
@@ -197,12 +265,12 @@ const styles = StyleSheet.create({
     },
 
     musicControlsContainer: {
-        bottom: '5%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: "space-between",
         width: '60%',
-        marginTop: 30
+        marginTop: 30,
+        marginBottom: 50
     },
 
 
