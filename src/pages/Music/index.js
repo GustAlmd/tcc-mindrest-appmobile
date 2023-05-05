@@ -10,7 +10,7 @@ const { width, height } = Dimensions.get('window');
 
 export default function Music() {
 
-    //teste para o git
+    //teste para o github
 
     const [sound, setSound] = useState(null);
     const [songIndex, setSongIndex] = useState(0);
