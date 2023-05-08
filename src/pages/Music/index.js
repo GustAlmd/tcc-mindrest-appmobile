@@ -16,7 +16,9 @@ export default function Music() {
     const [songIndex, setSongIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0); // novo estado para controlar o valor da barra de progresso
-
+    const [currentDuration, setCurrentDuration] = useState(0);
+    const [totalDuration, setTotalDuration] = useState(0);
+    
     const soundRef = useRef(null); // novo ref para obter uma referência ao objeto de áudio
 
 
@@ -25,14 +27,18 @@ export default function Music() {
     }, []);
 
     
-    useEffect(() => { // novo useEffect para atualizar o valor da barra de progresso
-        const interval = setInterval(async () => {
-            const status = await sound.getStatusAsync();
-            const progress = status.positionMillis / status.durationMillis;
-            setProgress(progress);
+    useEffect(() => {
+            const interval = setInterval(async () => {
+          const status = await sound.getStatusAsync();
+          const currentDuration = status.positionMillis;
+          const totalDuration = status.durationMillis;
+          const progress = currentDuration / totalDuration;
+          setProgress(progress);
+          setCurrentDuration(currentDuration);
+          setTotalDuration(totalDuration);
         }, 1000);
         return () => clearInterval(interval);
-    }, [sound]);
+      }, [sound]);
 
     async function loadAudio() {
         try {
@@ -88,7 +94,11 @@ export default function Music() {
         playSound();
     }
 
-
+    function formatDuration(duration) {
+        const minutes = Math.floor(duration / 60000);
+        const seconds = Math.floor((duration % 60000) / 1000);
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -117,8 +127,8 @@ export default function Music() {
                     />
                     { /* music progress durations */}
                     <View style={styles.progressLevelDuration}>
-                        <Text style={styles.progressLabelText}>00:00</Text>
-                        <Text style={styles.progressLabelText}>00:00</Text>
+                        <Text style={styles.progressLabelText}>{formatDuration(currentDuration)}</Text>
+                        <Text style={styles.progressLabelText}>{formatDuration(totalDuration)}</Text>
                     </View>
                 </View>
 
