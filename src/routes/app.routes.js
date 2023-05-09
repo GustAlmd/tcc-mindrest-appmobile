@@ -8,6 +8,7 @@ import Music from '../pages/Music';
 import Notepad from '../pages/Notepad/index';
 import Write from '../pages/Notepad/write';
 import SelectButtons from '../pages/Notepad/selectButtons';
+import SwitchEmotion from '../pages/Notepad/switchEmotion';
 import Profile from '../pages/Profile';
 import Games from '../pages/Games';
 
@@ -133,6 +134,7 @@ function TabNavigator() {
         />
         <AppStack.Screen name="SelectButtons" component={SelectButtons} />
         <AppStack.Screen name="Write" component={Write} />
+        <AppStack.Screen name="SwitchEmotion" component={SwitchEmotion} />
       </AppStack.Navigator>
     );
   }

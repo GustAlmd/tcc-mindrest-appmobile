@@ -31,6 +31,9 @@ const Write = ({ route }) => {
 
   const formattedDate = currentDate.toLocaleDateString('pt-BR', options); // formata a data atual em português
 
+  const handleEmotionSwitch = ( selectedButtons ,emotionId, symbol) => {
+    navigation.navigate('SwitchEmotion', { selectedButtons, emotionId, symbol });
+  };
 
   return (
     <View style={styles.container}>
@@ -54,7 +57,7 @@ const Write = ({ route }) => {
             <View style={styles.emoticons}>
               <TouchableOpacity
                 style={styles.roundButton}
-                onPress={() => handleButtonPress()}
+                onPress={() => handleEmotionSwitch(selectedButtons, emotionId, symbol)}
               >
                 <Text style={styles.buttonEmoticon}>{symbol}</Text>
               </TouchableOpacity>
