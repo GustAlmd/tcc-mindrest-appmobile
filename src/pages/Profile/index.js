@@ -2,8 +2,8 @@ import React, { useState, useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput, Modal } from 'react-native';
 import { AuthContext } from '../../context/auth'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Feather from 'react-native-vector-icons/Feather';
+import ImagePicker from 'react-native-image-picker';
 
 const ProfileScreen = () => {
   const { user, signOut } = useContext(AuthContext);
@@ -14,7 +14,6 @@ const ProfileScreen = () => {
 
   const [url, setUrl] = useState(null);
   const [open, setOpen] = useState(false)
-
   
   return (
 

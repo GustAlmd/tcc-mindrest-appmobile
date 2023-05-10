@@ -3,12 +3,6 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const expressions = [
-    { id: 'feliz', symbol: '😀' },
-    { id: 'triste', symbol: '😔' },
-    { id: 'irritado', symbol: '😠' },
-    { id: 'pensativo', symbol: '🤔' },
-];
 
 const SwitchEmotion = ({ route }) => {
     const navigation = useNavigation();
@@ -23,35 +17,42 @@ const SwitchEmotion = ({ route }) => {
             <View style={styles.containerEmotion}>
                 <Text style={styles.title}> Como você está se sentindo? </Text>
                 <TouchableOpacity
-                    style={[styles.buttonEmotion, { backgroundColor: '#BDFCC9' }]}
-                    onPress={() => handleEmotionSwitch(selectedButtons, "feliz", "😀")}
+                    style={[styles.buttonEmotion, { backgroundColor: '#bbf7d0' }]}
+                    onPress={() => handleEmotionSwitch(selectedButtons, "radiante", "😀")}
                 >
                     <Text style={styles.emotion}>😀</Text>
-                    <Text style={styles.text}> Feliz </Text>
+                    <Text style={styles.text}> Radiante </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={[styles.buttonEmotion, { backgroundColor: '#ADD8E6' }]}
-                    onPress={() => handleEmotionSwitch(selectedButtons,"triste", "😔")}
+                    style={[styles.buttonEmotion, { backgroundColor: '#dcfce7' }]}
+                    onPress={() => handleEmotionSwitch(selectedButtons,"feliz", "😊")}
                 >
-                    <Text style={styles.emotion}>😔</Text>
+                    <Text style={styles.emotion}>😊</Text>
                     <Text style={styles.text}> Triste </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={[styles.buttonEmotion, { backgroundColor: '#E9967A' }]}
+                    style={[styles.buttonEmotion, { backgroundColor: '#fafafa' }]}
+                    onPress={() => handleEmotionSwitch(selectedButtons, "normal", "😐")}
+                >
+                    <Text style={styles.emotion}>😐</Text>
+                    <Text style={styles.text}> Normal </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={[styles.buttonEmotion, { backgroundColor: '#fee2e2' }]}
                     onPress={() => handleEmotionSwitch(selectedButtons, "irritado", "😠")}
                 >
                     <Text style={styles.emotion}>😠</Text>
                     <Text style={styles.text}> Irritado </Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity
-                    style={[styles.buttonEmotion, { backgroundColor: '#FFFFB6' }]}
-                    onPress={() => handleEmotionSwitch(selectedButtons, "pensativo", "🤔")}
+                    style={[styles.buttonEmotion, { backgroundColor: '#fecaca' }]}
+                    onPress={() => handleEmotionSwitch(selectedButtons, "triste", "😥")}
                 >
-                    <Text style={styles.emotion}>🤔</Text>
-                    <Text style={styles.text}> Pensativo </Text>
+                    <Text style={styles.emotion}>😥</Text>
+                    <Text style={styles.text}> Triste </Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -84,7 +85,6 @@ const styles = StyleSheet.create({
         width: wp('90%'),
         height: hp('9%'),
         borderRadius: 10,
-
     },
     text: {
         fontSize: wp('5%'),

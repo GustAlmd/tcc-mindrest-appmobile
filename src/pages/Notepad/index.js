@@ -7,10 +7,11 @@ import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const expressions = [
-    { id: 'feliz', symbol: '😀' },
-    { id: 'triste', symbol: '😔' },
+    { id: 'radiante', symbol: '😀' },
+    { id: 'feliz', symbol: '😊' },
+    { id: 'normal', symbol: '😐' },
     { id: 'irritado', symbol: '😠' },
-    { id: 'pensativo', symbol: '🤔' },
+    { id: 'triste', symbol: '😥' },
 ];
 
 const Notepad = () => {
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 5.65,
         elevation: 9,
-        paddingHorizontal: wp('6%'),
+        paddingHorizontal: wp('4.5%'),
     },
     buttonText: {
         fontSize: wp('8%'),
