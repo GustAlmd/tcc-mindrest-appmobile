@@ -10,8 +10,6 @@ const { width, height } = Dimensions.get('window');
 
 export default function Music() {
 
-    //teste para o github kkk
-
     const [sound, setSound] = useState(null);
     const [songIndex, setSongIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -140,11 +138,11 @@ export default function Music() {
 
                     {isPlaying ? (
                         <TouchableOpacity style={styles.controlButton} onPress={() => pauseSound()}>
-                            <Ionicons name="ios-pause-circle" size={70} color="#888888" />
+                            <Ionicons name="ios-pause-circle" size={70} color="#fff" />
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity style={styles.controlButton} onPress={() => playSound()}>
-                            <Ionicons name="ios-play-circle" size={70} color="#888888" />
+                            <Ionicons name="ios-play-circle" size={70} color="#fff" />
                         </TouchableOpacity>
                     )}
                     <TouchableOpacity onPress={() => handleNext()}>
@@ -161,7 +159,7 @@ export default function Music() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#222831'
+        backgroundColor: '#8896d7'
     },
 
     maincontainer: {

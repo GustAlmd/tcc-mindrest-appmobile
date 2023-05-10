@@ -1,17 +1,21 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput, Modal } from 'react-native';
 import { AuthContext } from '../../context/auth'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { Modal } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 const ProfileScreen = () => {
   const { user, signOut } = useContext(AuthContext);
 
+  const [nome, setNome] = useState(user?.name)
+  const [lastName, setLastName] = useState(user?.lastName)
+  const [phone, setPhone] = useState(user?.phone)
+
   const [url, setUrl] = useState(null);
   const [open, setOpen] = useState(false)
 
+  
   return (
 
     <View style={styles.container}>
@@ -47,31 +51,45 @@ const ProfileScreen = () => {
         <Text style={styles.buttonText}> Sair </Text>
       </TouchableOpacity>
 
-      <Modal visible={open} animationType='slide' transparent={true}>
-        <Modal style={styles.modalContainer}>
+
+      <Modal visible={open} animationType="slide" transparent={true}>
+        <View style={styles.modalContainer}>
           <TouchableOpacity style={styles.buttonBack} onPress={() => setOpen(false)}>
             <Feather
               name='arrow-left'
               size={22}
               color="#121212"
             />
-            <Text style={styles.buttonText}> Voltar </Text>
+            <TouchableOpacity style={styles.buttonText} onPress={() => setOpen(false)}>
+              <Text style={styles.buttonText}> Voltar </Text>
+            </TouchableOpacity>
           </TouchableOpacity>
+        
 
-          <TextInput style={styles.input}
-            placeholder="Seu Nome"
-          />
+        <TextInput style={styles.input}
+          placeholder={user?.name}
+          value={nome}
+          onChangeText= { (text) => setNome(text)}
+        />
 
-          <TouchableOpacity style={styles.buttonChange} onPress={() => {}}>
-            <Text style={styles.buttonText}> Atualizar </Text>
-          </TouchableOpacity>
+        <TextInput style={styles.input}
+          placeholder={user?.lastName}
+          value={lastName}
+          onChangeText= { (text) => setLastName(text)}
+        />
 
-        </Modal>
+        <TextInput style={styles.input}
+          placeholder={user?.phone}
+          value={phone}
+          onChangeText= { (text) => setPhone(text)}
+        />
+
+        <TouchableOpacity style={styles.buttonExit} onPress={() => { }}>
+          <Text style={styles.buttonText}> Atualizar </Text>
+        </TouchableOpacity>
+
+        </View>
       </Modal>
-
-
-
-
     </View>
   );
 };
@@ -80,8 +98,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#8896d7'
-
+    backgroundColor: '#8896d7',
   },
 
   header: {
@@ -161,32 +178,35 @@ const styles = StyleSheet.create({
 
   modalContainer: {
     width: '100%',
-    height: '70%',
-    backgroundColor: '#FFF',
+    height: '52%',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 0,
+    bottom: 0
   },
 
   buttonBack: {
     position: 'absolute',
-    top: 15,
+    top: 18,
     left: 25,
     flexDirection: 'row',
     alignItems: 'center'
   },
 
   input: {
-   
+    width: '90%',
+    height: 50,
     backgroundColor: '#DDD',
     borderRadius: 10,
     padding: 10,
+    margin: 10,
     fontSize: 20,
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
+    textAlign: 'center'
+  },
+
+  
+
 })
 
 export default ProfileScreen;
