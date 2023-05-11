@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
-import moment from 'moment';
-import 'moment/locale/pt-br'; // importa o idioma português
 import { useNavigation } from '@react-navigation/native';
+import 'moment/locale/pt-br';
+import moment from 'moment';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const expressions = [
@@ -27,17 +27,8 @@ const Notepad = () => {
             navigation.navigate('SelectButtons', { emotionId, symbol });
         }
     };
-
     const [selectedDate, setSelectedDate] = useState(new Date());
-
-    const onSelectDate = (date) => {
-        setSelectedDate(date);
-    };
-
-    // Configuração do calendário para português
     moment.locale('pt-br');
-    const daysInWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
-    const months = moment.months();
 
     return (
         <View style={styles.container}>
@@ -54,12 +45,23 @@ const Notepad = () => {
                 disabledDateNameStyle={{ color: 'grey' }}
                 disabledDateNumberStyle={{ color: 'grey' }}
                 iconContainer={{ flex: 0.1 }}
+                locale={{
+                    name: 'pt-br',
+                    config: {
+                        months: 'Janeiro_Fevereiro_Março_Abril_Maio_Junho_Julho_Agosto_Setembro_Outubro_Novembro_Dezembro'.split('_'),
+                        weekdaysShort: 'Dom_Seg_Ter_Qua_Qui_Sex_Sáb'.split('_'),
+                        weekdays: 'Domingo_Segunda_Terça_Quarta_Quinta_Sexta_Sábado'.split('_')
+                    }
+                }}
                 selectedDate={selectedDate}
-                onSelectDate={onSelectDate}
-                markedDates={[
-                    { date: '2023-04-27', dots: [{ color: 'white' }] }
-                ]}
-                locale={{ name: 'pt', config: { days: daysInWeek, monthsShort: months } }} // definindo o locale em português
+                onDateSelected={(date) => {
+                    if (date !== selectedDate) {
+                        // Data diferente da atual foi selecionada, não faz nada
+                        return;
+                    }
+                    // Data atual foi selecionada, continua com a lógica
+                    // que você deseja executar
+                }}
             />
 
             <View style={styles.buttons}>
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         borderWidth: wp('0.2'),
         height: hp('7%'),
-        borderRadius: 90,
+        borderRadius: 15,
         backgroundColor: '#556aa9',
         justifyContent: 'center',
         alignItems: 'center',

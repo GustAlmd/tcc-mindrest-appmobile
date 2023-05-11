@@ -77,11 +77,11 @@ function TabNavigator() {
         />
   
         <Tab.Screen 
-        name="Perfil"
+        name="Configurações"
         component={ProfileNavigation} 
         options={{
           tabBarIcon: ({ size, color }) => (
-            <Feather name="user" size={size} color={color} />
+            <Feather name="settings" size={size} color={color} />
           )
         }}
         />
@@ -93,7 +93,21 @@ function TabNavigator() {
   function HomeNavigation() {
     return (
       <AppStack.Navigator screenOptions={{headerShown: false}}>
-        <AppStack.Screen name="HomeScreen" component={Home} />
+        <AppStack.Screen name="HomeScreen" component={Home} 
+          options={{
+            headerShown: true,
+            title: 'MindRest',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#556aa9',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+  
+              fontWeight: 'bold',
+            },
+          }}
+        />
       </AppStack.Navigator>
     );
   }
@@ -101,7 +115,21 @@ function TabNavigator() {
   function GamesNavigation() {
     return (
       <AppStack.Navigator screenOptions={{headerShown: false}}>
-        <AppStack.Screen name="Games" component={Games} />
+        <AppStack.Screen name="Games" component={Games} 
+          options={{
+            headerShown: true,
+            title: 'MindRest',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#556aa9',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+  
+              fontWeight: 'bold',
+            },
+          }}
+        />
       </AppStack.Navigator>
     );
   }
@@ -109,7 +137,21 @@ function TabNavigator() {
   function MusicNavigation() {
     return (
       <AppStack.Navigator screenOptions={{headerShown: false}}>
-        <AppStack.Screen name="Music" component={Music} />
+        <AppStack.Screen name="Music" component={Music} 
+          options={{
+            headerShown: true,
+            title: 'MindRest',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#556aa9',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+  
+              fontWeight: 'bold',
+            },
+          }}
+        />
       </AppStack.Navigator>
     );
   }

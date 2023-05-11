@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text, Share } from 'react-native';
+import { View, Image, StyleSheet, Text, Share, useWindowDimensions } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { Ionicons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -24,6 +24,7 @@ const SlideItem = ({ item }) => {
 };
 
 const Slide = () => {
+  const windowHeight = useWindowDimensions().height; // Obtém a altura da tela
 
   const shareImage = async () => {
     try {
@@ -38,16 +39,19 @@ const Slide = () => {
   ''
   return (
     <View style={styles.container}>
-      <View
-        style={styles.header}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
-          MindRest
-        </Text>
-        <Ionicons name="share-outline"
+      <View style={[styles.footer, { bottom: windowHeight - hp('100%') }]}>
+        <View style={{ flex: 1 }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', textAlign: 'center' }}>
+            
+          </Text>
+        </View>
+        <Ionicons
+          name="share-outline"
           onPress={shareImage}
-          style={{ fontSize: 25, color: 'white' }}
+          style={{ fontSize: 30, color: 'white', marginBottom: hp('1%') }}
         />
       </View>
+
       <Swiper
         showsButtons={false}
         showsPagination={false}
@@ -72,9 +76,8 @@ const styles = StyleSheet.create({
     height: hp('100%'),
     position: 'relative',
   },
-  header: {
+  footer: {
     position: 'absolute',
-    top: 0,
     left: 0,
     right: 0,
     flexDirection: 'row',

@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Dimensions, Image, Animated, FlatList } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Dimensions, Image} from 'react-native';
 import Slider from "@react-native-community/slider";
 import { Ionicons } from "@expo/vector-icons";
 import songs from "./model/data";
 import { Audio } from 'expo-av';
-
-
-const { width, height } = Dimensions.get('window');
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default function Music() {
 
@@ -133,20 +131,20 @@ export default function Music() {
                 {/* music controls */}
                 <View style={styles.musicControlsContainer}>
                     <TouchableOpacity onPress={() => handlePrevious()}>
-                        <Ionicons name="play-skip-back-outline" size={35} color="#ffffff" />
+                        <Ionicons name="play-skip-back-outline" size={45} color="#ffffff" />
                     </TouchableOpacity>
 
                     {isPlaying ? (
                         <TouchableOpacity style={styles.controlButton} onPress={() => pauseSound()}>
-                            <Ionicons name="ios-pause-circle" size={70} color="#fff" />
+                            <Ionicons name="ios-pause-circle" size={80} color="#fff" />
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity style={styles.controlButton} onPress={() => playSound()}>
-                            <Ionicons name="ios-play-circle" size={70} color="#fff" />
+                            <Ionicons name="ios-play-circle" size={80} color="#fff" />
                         </TouchableOpacity>
                     )}
                     <TouchableOpacity onPress={() => handleNext()}>
-                        <Ionicons name="play-skip-forward-outline" size={35} color="#ffffff" />
+                        <Ionicons name="play-skip-forward-outline" size={45} color="#ffffff" />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -169,50 +167,6 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
 
-    bottomContainer: {
-        width: width,
-        alignItems: 'center',
-        paddingVertical: 15,
-        borderTopColor: '#393E46',
-        borderWidth: 1,
-    },
-    botoomIconWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '80%'
-    },
-
-    mainImageWrapper: {
-        width: width,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 25
-    },
-
-    imageWrapper: {
-        width: 300,
-        height: 340,
-        marginBottom: 25,
-        marginTop: 35
-    },
-
-    musicImage: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 15
-    },
-
-    elevation: {
-        elevation: 5,
-        shadowColor: '#ccc',
-        shadowOffset: {
-            width: 5,
-            height: 5
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 3.84
-    },
-
     songContent: {
         fontSize: 18,
         fontWeight: '300',
@@ -222,53 +176,52 @@ const styles = StyleSheet.create({
     },
 
     artwork: {
-        width: 300,
-        height: 300,
-        borderRadius: 150,
-        marginBottom: 25,
-        marginTop: 35
+        width: wp('85%'),
+        height: hp('40%'),
+        borderRadius: wp('10%'),
+        marginBottom: hp('4%'),
+        marginTop: hp('8%')
       },  
     
     songTitle: {
-        fontSize: 18,
-        fontWeight: '600',
+        fontSize: wp('7%'),
+        fontWeight: 'bold',
         textAlign: 'center',
         color: '#EEEEEE'
     },
 
     songArtist: {
-        fontSize: 16,
-        fontWeight: '300',
+        fontSize:  wp('4%'),
         textAlign: 'center',
         color: '#EEEEEE'
     },
 
     progressBar: {
-        width: 350,
-        height: 40,
+        width: wp('85%'),
+        height: hp('2%'),
         marginTop: 25,
         flexDirection: 'row'
     },
 
     progressLevelDuration: {
-        width: 340,
+        width: wp('85%'),
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
 
     progressLabelText: {
         color: '#fff',
-        fontWeight: '500',
+        fontWeight: 'bold',
     },
 
     musicControlsContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: "space-between",
-        width: '60%',
-        marginTop: 30,
-        marginBottom: 50
-    },
+        width: wp('60%'),
+        marginTop: hp('5%'),
+        marginBottom: ('8%')
 
+    },
 
 });
