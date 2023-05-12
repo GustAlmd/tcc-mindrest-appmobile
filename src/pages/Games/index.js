@@ -1,12 +1,19 @@
 import React, {useEffect} from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import DATA from './data';
-import { loadFonts } from '../../assets/fonts/fonts';
+import { useNavigation } from '@react-navigation/native';
+import gameData from './data';
 
-const Card = ({ title, description, onPress }) => {
+const Card = ({ title, description, navigate }) => {
+    const navigation = useNavigation();
+
+
+    const handlePress = () => {
+        navigation.navigate('Navigate') ;
+    };
+
     return (
-        <TouchableOpacity style={styles.card} onPress={onPress}>
+        <TouchableOpacity style={styles.card} onPress={handlePress}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.description}>{description}</Text>
         </TouchableOpacity>
@@ -15,12 +22,9 @@ const Card = ({ title, description, onPress }) => {
 
 const App = () => {
     const renderItem = ({ item }) => (
-        <Card title={item.title} description={item.description} />
+        <Card title={item.title} description={item.description} /> 
     );
-    useEffect(() => {
-        loadFonts();
-      }, []);
-
+    
     return (
         <View style={styles.container}>
             <View style={styles.containerTitle}>
@@ -29,7 +33,7 @@ const App = () => {
             </View>
             <View style={styles.containerCards}>
                 <FlatList
-                    data={DATA}
+                    data={gameData}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                     numColumns={2}
@@ -81,7 +85,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'white',
         fontSize: wp('8%'),
-        fontFamily: 'PurpleQueen'
     },
     subtitleGame: {
         fontWeight: 'bold',
