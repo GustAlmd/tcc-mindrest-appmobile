@@ -1,47 +1,47 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import gameData from './data';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 
 const Card = ({ title, description, navigate }) => {
-    const navigation = useNavigation();
-
-
-    const handlePress = () => {
-        navigation.navigate('Navigate') ;
-    };
-
-    return (
-        <TouchableOpacity style={styles.card} onPress={handlePress}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.description}>{description}</Text>
-        </TouchableOpacity>
-    );
+  return (
+    <TouchableOpacity style={styles.card} onPress={navigate}>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.description}>{description}</Text>
+    </TouchableOpacity>
+  );
 };
 
 const App = () => {
-    const renderItem = ({ item }) => (
-        <Card title={item.title} description={item.description} /> 
-    );
-    
-    return (
-        <View style={styles.container}>
-            <View style={styles.containerTitle}>
-                <Text style={styles.titleGame}>Jogos para React</Text>
-                <Text style={styles.subtitleGame}>Escolha um Jogo Abaixo</Text>
-            </View>
-            <View style={styles.containerCards}>
-                <FlatList
-                    data={gameData}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                    numColumns={2}
-                    contentContainerStyle={styles.cardList}
-                />
-            </View>
-        </View>
-    );
+  const navigation = useNavigation();
+
+  const renderItem = ({ item }) => (
+    <Card
+      title={item.title}
+      description={item.description}
+      navigate={() => navigation.navigate(item.routeName)}
+    />
+  );
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.containerTitle}>
+        <Text style={styles.titleGame}>Jogos para React</Text>
+        <Text style={styles.subtitleGame}>Escolha um Jogo Abaixo</Text>
+      </View>
+      <View style={styles.containerCards}>
+        <FlatList
+          data={gameData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          contentContainerStyle={styles.cardList}
+        />
+      </View>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

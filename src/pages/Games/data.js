@@ -3,13 +3,13 @@ const gameData = [
         id: '1',
         title: 'Jogo 1',
         description: 'Jogue para se acalmar e manter concentrado.',
-        navigate: 'Ansiedade'
+        routeName: 'Ansiedade',
     },
     {
         id: '2',
         title: 'Jogo 2',
         description: 'Jogue para diminuir sua ansiedade.',
-        navigation: 'Ansiedade'
+        routeName: 'Concentracao',
     },
     {
         id: '3',

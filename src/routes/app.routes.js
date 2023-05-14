@@ -12,6 +12,7 @@ import SwitchEmotion from '../pages/Notepad/switchEmotion';
 import Profile from '../pages/Profile';
 import Games from '../pages/Games/index';
 import Ansiedade from '../pages/Games/ansiedadeGame';
+import Concentracao from '../pages/Games/concentracaoGame'
 
 
 const AppStack = createNativeStackNavigator();
@@ -133,6 +134,7 @@ function TabNavigator() {
           }}
         />
         <AppStack.Screen name="Ansiedade" component={Ansiedade} />
+        <AppStack.Screen name="Concentracao" component={Concentracao} />
       </AppStack.Navigator>
     );
   }
