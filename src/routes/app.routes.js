@@ -133,8 +133,36 @@ function TabNavigator() {
             },
           }}
         />
-        <AppStack.Screen name="Ansiedade" component={Ansiedade} />
-        <AppStack.Screen name="Concentracao" component={Concentracao} />
+        <AppStack.Screen name="Ansiedade" component={Ansiedade}
+           options={{
+            headerShown: true,
+            title: 'MindRest',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#556aa9',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+  
+              fontWeight: 'bold',
+            },
+          }}
+        />
+        <AppStack.Screen name="Concentracao" component={Concentracao} 
+           options={{
+            headerShown: true,
+            title: 'MindRest',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#556aa9',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+  
+              fontWeight: 'bold',
+            },
+          }}
+        />
       </AppStack.Navigator>
     );
   }
