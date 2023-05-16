@@ -10,8 +10,10 @@ class BreathingAnimation extends Component {
         };
     }
 
+    
+    
     componentDidMount() {
-        this.startBreathing();
+        this.pauseBreathing();
     }
     //PLAY
     startBreathing = () => {
@@ -24,12 +26,14 @@ class BreathingAnimation extends Component {
                         easing: Easing.inOut(Easing.ease),
                         useNativeDriver: true,
                     }),
+                    Animated.delay(3000), // Adiciona um atraso de 3 segundos
                     Animated.timing(this.state.breathAnim, {
                         toValue: 0,
                         duration: 4000,
                         easing: Easing.inOut(Easing.ease),
                         useNativeDriver: true,
                     }),
+                    
                 ]),
             ).start();
         });
