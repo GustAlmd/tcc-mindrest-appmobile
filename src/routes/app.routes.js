@@ -197,6 +197,7 @@ function TabNavigator() {
           component={Notepad} 
           options={{
             headerShown: true,
+            headerTitleAlign: 'center',
             title: 'Conte e Registre Seus Sentimentos',
             headerStyle: {
               backgroundColor: '#556aa9',
@@ -224,6 +225,7 @@ function TabNavigator() {
           options={{
             headerShown: true,
             title: 'Configurações da Conta',
+            headerTitleAlign: 'center',
             headerStyle: {
               backgroundColor: '#556aa9',
             },

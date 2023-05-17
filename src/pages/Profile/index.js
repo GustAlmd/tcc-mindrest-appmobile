@@ -4,30 +4,76 @@ import { AuthContext } from '../../context/auth'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Feather from 'react-native-vector-icons/Feather';
 import ImagePicker from 'react-native-image-picker';
+import { db } from '../../firebaseConnection';
+import { updateDoc, doc, getDoc } from 'firebase/firestore';
 
 const ProfileScreen = () => {
-  const { user, signOut } = useContext(AuthContext);
+  const { user, signOut, storageUser, setUser } = useContext(AuthContext);
 
-  const [nome, setNome] = useState(user?.name)
+  const [name, setName] = useState(user?.name)
   const [lastName, setLastName] = useState(user?.lastName)
   const [phone, setPhone] = useState(user?.phone)
 
   const [url, setUrl] = useState(null);
   const [open, setOpen] = useState(false)
 
+  //Atualizar Perfil
+  const updateProfile = async () => {
+    if (name === '' || lastName === '' || phone === '') {
+      console.log('Todos os campos são obrigatórios!');
+      return;
+    }
+
+    try {
+      const { uid } = user;
+      const userRef = doc(db, 'Cadastro', uid);
+
+      const docSnapshot = await getDoc(userRef);
+      if (!docSnapshot.exists()) {
+        console.log('Documento do usuário não encontrado!');
+        return;
+      }
+
+      const updatedFields = {
+        name,
+        lastName,
+        phone,
+      };
+
+      await updateDoc(userRef, updatedFields);
+
+      let data ={
+        uid: user.uid,
+        name: name,
+        lastName: lastName,
+        phone: phone,
+        email: user.email
+      };
+  
+      setUser(data);
+      storageUser(data);
+      alert('Perfil atualizado com sucesso!');
+      setOpen(false); // Fechar o modal após a atualização bem-sucedida
+    } catch (error) {
+      console.error('Erro ao atualizar o perfil:', error);
+    }
+
+  };
+
+  //Foto do Usuário
   const uploadFiles = () => {
 
-    const options ={
+    const options = {
       noData: true,
       mediaType: 'photo'
     };
 
-    ImagePicker.launchImageLibrary( options, response =>{
-      if(response.didCancel){
+    ImagePicker.launchImageLibrary(options, response => {
+      if (response.didCancel) {
         console.log('cancelou o modal');
-      }else if(response.error){
+      } else if (response.error) {
         console.log('Erro' + response.errorMessage);
-      }else{
+      } else {
         uploadFileFirebase(response)
       }
     })
@@ -38,10 +84,10 @@ const ProfileScreen = () => {
     return Platform.OS === 'android' ? path : uri;
   }
 
-  const uploadFileFirebase = async response =>{
+  const uploadFileFirebase = async response => {
     const fileSource = getFileLocalPath(response)
   }
-  
+
   return (
 
     <View style={styles.container}>
@@ -88,29 +134,29 @@ const ProfileScreen = () => {
             />
             <Text style={styles.buttonText}> Voltar </Text>
           </TouchableOpacity>
-        
 
-        <TextInput style={styles.input}
-          placeholder={user?.name}
-          value={nome}
-          onChangeText= { (text) => setNome(text)}
-        />
 
-        <TextInput style={styles.input}
-          placeholder={user?.lastName}
-          value={lastName}
-          onChangeText= { (text) => setLastName(text)}
-        />
+          <TextInput style={styles.input}
+            placeholder={user?.name}
+            value={name}
+            onChangeText={(text) => setName(text)}
+          />
 
-        <TextInput style={styles.input}
-          placeholder={user?.phone}
-          value={phone}
-          onChangeText= { (text) => setPhone(text)}
-        />
+          <TextInput style={styles.input}
+            placeholder={user?.lastName}
+            value={lastName}
+            onChangeText={(text) => setLastName(text)}
+          />
 
-        <TouchableOpacity style={styles.buttonChange} onPress={() => { }}>
-          <Text style={styles.buttonText}> Atualizar </Text>
-        </TouchableOpacity>
+          <TextInput style={styles.input}
+            placeholder={user?.phone}
+            value={phone}
+            onChangeText={(text) => setPhone(text)}
+          />
+
+          <TouchableOpacity style={styles.buttonChange} onPress={() => { updateProfile() }}>
+            <Text style={styles.buttonText}> Atualizar </Text>
+          </TouchableOpacity>
 
         </View>
       </Modal>
@@ -229,7 +275,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
 
-  
+
 
 })
 
