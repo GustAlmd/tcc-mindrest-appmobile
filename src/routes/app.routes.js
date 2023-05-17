@@ -5,15 +5,15 @@ import { Feather } from '@expo/vector-icons';
 
 import Home from "../pages/Home";
 import Music from '../pages/Music';
-import Notepad from '../pages/Notepad/index';
-import Write from '../pages/Notepad/write';
-import SelectButtons from '../pages/Notepad/selectButtons';
-import SwitchEmotion from '../pages/Notepad/switchEmotion';
 import Profile from '../pages/Profile';
 import Games from '../pages/Games/index';
 import Ansiedade from '../pages/Games/ansiedadeGame';
 import Concentracao from '../pages/Games/concentracaoGame'
-
+import Notepad from '../pages/Notepad/index';
+import Write from '../pages/Notepad/write';
+import SelectButtons from '../pages/Notepad/selectButtons';
+import SwitchEmotion from '../pages/Notepad/switchEmotion';
+import ChooseEmotion from "../pages/Notepad/chooseEmotion";
 
 const AppStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -209,6 +209,7 @@ function TabNavigator() {
         />
         <AppStack.Screen name="SelectButtons" component={SelectButtons} />
         <AppStack.Screen name="Write" component={Write} />
+        <AppStack.Screen name="ChooseEmotion" component={ChooseEmotion} />
         <AppStack.Screen name="SwitchEmotion" component={SwitchEmotion} />
       </AppStack.Navigator>
     );

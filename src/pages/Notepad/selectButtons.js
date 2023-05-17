@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 const SelectButtons = ({ route }) => {
   const navigation = useNavigation();
   const [selectedButtons, setSelectedButtons] = useState([]);
-  const { emotionId, symbol } = route.params;
+  const { emotionId, symbol, date } = route.params;
   
   const buttonContinue = (selectedButtons, emotionId, symbol) => {
       navigation.navigate('Write', { selectedButtons, emotionId, symbol });

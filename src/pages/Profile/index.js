@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput, Modal } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput, Modal, Platform } from 'react-native';
 import { AuthContext } from '../../context/auth'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Feather from 'react-native-vector-icons/Feather';
@@ -14,6 +14,33 @@ const ProfileScreen = () => {
 
   const [url, setUrl] = useState(null);
   const [open, setOpen] = useState(false)
+
+  const uploadFiles = () => {
+
+    const options ={
+      noData: true,
+      mediaType: 'photo'
+    };
+
+    ImagePicker.launchImageLibrary( options, response =>{
+      if(response.didCancel){
+        console.log('cancelou o modal');
+      }else if(response.error){
+        console.log('Erro' + response.errorMessage);
+      }else{
+        uploadFileFirebase(response)
+      }
+    })
+  }
+
+  const getFileLocalPath = response => {
+    const { path, uri } = response;
+    return Platform.OS === 'android' ? path : uri;
+  }
+
+  const uploadFileFirebase = async response =>{
+    const fileSource = getFileLocalPath(response)
+  }
   
   return (
 
@@ -24,7 +51,7 @@ const ProfileScreen = () => {
       {
         url ?
           (
-            <TouchableOpacity style={styles.uploadButton} onPress={() => alert('CLICOU')}>
+            <TouchableOpacity style={styles.uploadButton} onPress={uploadFiles}>
               <Text style={styles.uploadText}>+</Text>
               <Image
                 style={styles.avatar}
@@ -33,7 +60,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           ) :
           (
-            <TouchableOpacity style={styles.uploadButton} onPress={() => alert('CLICOU')}>
+            <TouchableOpacity style={styles.uploadButton} onPress={uploadFiles}>
               <Text style={styles.uploadText}>+</Text>
             </TouchableOpacity>
           )
@@ -57,11 +84,9 @@ const ProfileScreen = () => {
             <Feather
               name='arrow-left'
               size={22}
-              color="#121212"
+              color="#fff"
             />
-            <TouchableOpacity style={styles.buttonText} onPress={() => setOpen(false)}>
-              <Text style={styles.buttonText}> Voltar </Text>
-            </TouchableOpacity>
+            <Text style={styles.buttonText}> Voltar </Text>
           </TouchableOpacity>
         
 
@@ -83,7 +108,7 @@ const ProfileScreen = () => {
           onChangeText= { (text) => setPhone(text)}
         />
 
-        <TouchableOpacity style={styles.buttonExit} onPress={() => { }}>
+        <TouchableOpacity style={styles.buttonChange} onPress={() => { }}>
           <Text style={styles.buttonText}> Atualizar </Text>
         </TouchableOpacity>
 
@@ -171,14 +196,14 @@ const styles = StyleSheet.create({
 
   buttonText: {
     fontSize: 20,
-    color: '#000',
-    fontStyle: 'italic'
+    color: '#fff',
+    fontWeight: 'bold'
   },
 
   modalContainer: {
     width: '100%',
     height: '52%',
-    backgroundColor: '#fff',
+    backgroundColor: '#556aa9',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',

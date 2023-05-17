@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Modal, Platform } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import { useNavigation } from '@react-navigation/native';
 import 'moment/locale/pt-br';
 import moment from 'moment';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { parse, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 const expressions = [
     { id: 'radiante', symbol: '😀' },
@@ -12,11 +15,14 @@ const expressions = [
     { id: 'normal', symbol: '😐' },
     { id: 'irritado', symbol: '😠' },
     { id: 'triste', symbol: '😥' },
+
 ];
 
 const Notepad = () => {
-    const navigation = useNavigation();
 
+    const navigation = useNavigation();
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [showPicker, setShowPicker] = useState(false);
     const [selectedButton, setSelectedButton] = useState('');
 
     const handleButtonPress = (emotionId, symbol) => {
@@ -27,8 +33,26 @@ const Notepad = () => {
             navigation.navigate('SelectButtons', { emotionId, symbol });
         }
     };
-    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const [date, setDate] = useState(new Date());
     moment.locale('pt-br');
+
+    const openDatePicker = () => {
+        setShowPicker(true);
+    };
+    
+
+    const handleDateChange = (event, date) => {
+        setShowPicker(false);
+        if (event.type === 'set' && date !== undefined) {
+            const selectedDate = new Date(date);
+            navigation.navigate('SwitchEmotion', { selectedDate: formatDate(selectedDate) });
+        }
+    };    
+
+    const formatDate = (date) => {
+        return format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
+    };
 
     return (
         <View style={styles.container}>
@@ -53,15 +77,7 @@ const Notepad = () => {
                         weekdays: 'Domingo_Segunda_Terça_Quarta_Quinta_Sexta_Sábado'.split('_')
                     }
                 }}
-                selectedDate={selectedDate}
-                onDateSelected={(date) => {
-                    if (date !== selectedDate) {
-                        // Data diferente da atual foi selecionada, não faz nada
-                        return;
-                    }
-                    // Data atual foi selecionada, continua com a lógica
-                    // que você deseja executar
-                }}
+                selectedDate={date}
             />
 
             <View style={styles.buttons}>
@@ -81,20 +97,39 @@ const Notepad = () => {
                     ))}
                 </View>
             </View>
+
+            <View style={styles.footer}>
+                <TouchableOpacity style={styles.buttonFooter} onPress={openDatePicker}>
+                    <Text style={styles.textButton}>Registre o seu dia!</Text>
+                </TouchableOpacity>
+            </View>
+
+            {showPicker && (
+                <DateTimePicker
+                    value={selectedDate || new Date()}
+                    mode="date"
+                    display={Platform.OS === 'android' ? 'calendar' : 'default'}
+                    onChange={handleDateChange}
+                />
+            )}
+
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
     },
+
     buttons: {
         backgroundColor: '#8896d7',
         flex: 1,
         width: wp('100%'),
         height: hp('100%'),
     },
+
     textEmoticons: {
         paddingStart: wp('4%'),
         paddingTop: wp('5%'),
@@ -102,17 +137,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'white'
     },
+
     emoticons: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignItems: 'center',
         top: '5%'
     },
+
     roundButton: {
         borderColor: 'white',
         borderWidth: wp('0.2'),
-        height: hp('7%'),
-        borderRadius: 15,
+        height: hp('6%'),
+        borderRadius: 8,
         backgroundColor: '#556aa9',
         justifyContent: 'center',
         alignItems: 'center',
@@ -121,9 +158,39 @@ const styles = StyleSheet.create({
         elevation: 9,
         paddingHorizontal: wp('4.5%'),
     },
+
     buttonText: {
-        fontSize: wp('8%'),
+        fontSize: wp('6%'),
     },
+
+    footer: {
+        position: 'absolute',
+        bottom: 0,
+        width: wp('100%'),
+        height: hp('7%'),
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    },
+
+    buttonFooter: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: wp('35%'),
+        height: hp('5%'),
+        borderRadius: 50,
+        backgroundColor: '#3c4383',
+        marginEnd: wp('2.5%'),
+    },
+
+    textButton: {
+        fontWeight: 'bold',
+        color: 'white'
+    },
+
+    buttonsModal: {
+    }
+
 });
 
 export default Notepad;
