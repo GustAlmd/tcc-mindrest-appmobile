@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../firebaseConnection';
+import { AuthContext } from '../../context/auth'
 
 const Write = ({ route }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const { user } = useContext(AuthContext);
   const navigation = useNavigation();
   const [isFocused, setIsFocused] = useState(false);
   const [todayActivity, setTodayActivity] = useState('');
@@ -13,6 +18,33 @@ const Write = ({ route }) => {
   const [todayLearn, setTodayLearn] = useState('');
   const [todayGrateful, setTodayGrateful] = useState('');
   const { selectedButtons, emotionId, symbol } = route.params;
+  const registrosRef = collection(db, 'Registros');
+
+  //Salvando no banco de dados
+  const handleSave = async () => {
+    try {
+      // Crie um objeto com os dados a serem salvos
+      const registroData = {
+        formattedDate: formattedDate,
+        selectedButtons: selectedButtons,
+        emotionId: emotionId,
+        symbol: symbol,
+        todayActivity: todayActivity,
+        todayFeelings: todayFeelings,
+        todayThoughts: todayThoughts,
+        todayLearn: todayLearn,
+        todayGrateful: todayGrateful,
+        userID: user.uid
+      };
+
+      // Adicione os dados à coleção 'Registros'
+      const docRef = await addDoc(registrosRef, registroData);
+      setModalVisible(true);
+    } catch (error) {
+      alert('Erro ao adicionar documento: ', error);
+    }
+  };
+
 
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
@@ -31,7 +63,7 @@ const Write = ({ route }) => {
 
   const formattedDate = currentDate.toLocaleDateString('pt-BR', options); // formata a data atual em português
 
-  const handleEmotionSwitch = ( selectedButtons ,emotionId, symbol) => {
+  const handleEmotionSwitch = (selectedButtons, emotionId, symbol) => {
     navigation.navigate('SwitchEmotion', { selectedButtons, emotionId, symbol });
   };
 
@@ -84,7 +116,7 @@ const Write = ({ route }) => {
         <View style={styles.containerWrite}>
           <Text style={styles.questionText}>Como foi o seu dia?</Text>
           <TextInput
-            style={[styles.input, isFocused && styles.inputFocused, {textAlignVertical: 'top',}]}
+            style={[styles.input, isFocused && styles.inputFocused, { textAlignVertical: 'top', }]}
             placeholder="Hoje eu..."
             onChangeText={(text) => setTodayActivity(text)}
             value={todayActivity}
@@ -141,10 +173,32 @@ const Write = ({ route }) => {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.buttonFooter} >
+        <TouchableOpacity style={styles.buttonFooter} onPress={handleSave}>
           <Text style={styles.textButton}>Salvar</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Diário Salvo com Sucesso!</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                setModalVisible(false);
+                navigation.navigate('Notepad');
+              }}
+            >
+              <Text style={styles.modalButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
     </View>
   );
@@ -155,11 +209,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#8896d7'
   },
-
   scroll: {
     flex: 1,
   },
-
   footer: {
     position: 'absolute',
     bottom: 0,
@@ -169,7 +221,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end'
   },
-
   buttonFooter: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -179,65 +230,54 @@ const styles = StyleSheet.create({
     backgroundColor: '#3c4383',
     marginEnd: wp('2.5%'),
   },
-
   header: {
     height: hp('5%'),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-
   touchableContainer: {
     flex: 1,
     alignItems: 'flex-start',
     marginStart: wp('4%'),
   },
-
   textButton: {
     fontWeight: 'bold',
     color: 'white'
   },
-
   containerSelections: {
     marginTop: hp('1%'),
     flex: 1
   },
-
   text: {
     fontSize: hp('2.5%'),
     fontWeight: 'bold',
     marginStart: wp('3%'),
     color: 'white'
   },
-
   headerWrite: {
     flex: 1,
     flexDirection: 'row',
     marginTop: hp('1%')
   },
-
   emoticons: {
     paddingRight: wp('5%'),
     paddingLeft: wp('5%'),
     alignItems: 'center',
     justifyContent: 'center'
   },
-
   roundButton: {
     height: hp('7%'),
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center'
   },
-
   buttonEmoticon: {
     fontSize: wp('8.5%'),
   },
-
   selection: {
     flex: 1
   },
-
   selectedOptions: {
     backgroundColor: '#a3a8d6',
     height: hp('4.5%'),
@@ -248,7 +288,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     margin: wp('0.5%'),
   },
-
   buttonSwitch: {
     backgroundColor: '#556aa9',
     width: wp('18%'),
@@ -258,21 +297,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   textSwitch: {
     color: '#fcfcfc',
   },
-
   textOptions: {
     color: 'white',
     fontWeight: 'bold'
   },
-
   containerOptions: {
     flexDirection: 'row',
     flexWrap: 'wrap'
   },
-
   containerWrite: {
     flex: 1,
     padding: hp('2.5%'),
@@ -298,6 +333,34 @@ const styles = StyleSheet.create({
 
   inputFocused: {
     color: 'white',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: '#556aa9',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  modalButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 
 

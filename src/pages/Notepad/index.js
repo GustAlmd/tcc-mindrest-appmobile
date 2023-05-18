@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Modal, Platform } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity, Text, FlatList, Platform } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import { useNavigation } from '@react-navigation/native';
 import 'moment/locale/pt-br';
@@ -8,6 +8,10 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { parse, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import Registers from './Registers';
+import { db } from '../../firebaseConnection';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { AuthContext } from '../../context/auth'
 
 const expressions = [
     { id: 'radiante', symbol: '😀' },
@@ -19,11 +23,28 @@ const expressions = [
 ];
 
 const Notepad = () => {
-
+    const { user } = useContext(AuthContext);
     const navigation = useNavigation();
     const [selectedDate, setSelectedDate] = useState(null);
     const [showPicker, setShowPicker] = useState(false);
     const [selectedButton, setSelectedButton] = useState('');
+    const [registros, setRegistros] = useState([]);
+
+    const registrosRef = collection(db, 'Registros');
+
+    /*useEffect(() => {
+        const fetchRegistros = async () => {
+            const querry = query(registrosRef, where('userID', '==', user.uid));
+            const querySnapshot = await getDocs(querry);
+            const registros = [];
+            querySnapshot.forEach((doc) => {
+                registros.push({ id: doc.uid, date: doc.formattedDate, symbol: doc.symbol });
+            });
+            setRegistros(registros);
+        };
+
+        fetchRegistros();
+    }, [user.uid]);*/
 
     const handleButtonPress = (emotionId, symbol) => {
         if (emotionId === selectedButton) {
@@ -40,15 +61,15 @@ const Notepad = () => {
     const openDatePicker = () => {
         setShowPicker(true);
     };
-    
+
 
     const handleDateChange = (event, date) => {
         setShowPicker(false);
         if (event.type === 'set' && date !== undefined) {
             const selectedDate = new Date(date);
-            navigation.navigate('SwitchEmotion', { selectedDate: formatDate(selectedDate) });
+            navigation.navigate('ChooseEmotion', { selectedDate: formatDate(selectedDate) });
         }
-    };    
+    };
 
     const formatDate = (date) => {
         return format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
@@ -59,7 +80,7 @@ const Notepad = () => {
             <CalendarStrip
                 calendarAnimation={{ type: 'sequence', duration: 30 }}
                 daySelectionAnimation={{ type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'white' }}
-                style={{ height: 100, paddingTop: 10, paddingBottom: 5 }}
+                style={{ height: 100, paddingTop: 10, paddingBottom: 5, pointerEvents: 'none' }}
                 calendarHeaderStyle={{ color: 'white' }}
                 calendarColor={'#556aa9'}
                 dateNumberStyle={{ color: 'white' }}
@@ -68,7 +89,7 @@ const Notepad = () => {
                 highlightDateNameStyle={{ color: 'yellow' }}
                 disabledDateNameStyle={{ color: 'grey' }}
                 disabledDateNumberStyle={{ color: 'grey' }}
-                iconContainer={{ flex: 0.1 }}
+                iconContainer={{ opacity: 0 }}
                 locale={{
                     name: 'pt-br',
                     config: {
@@ -80,7 +101,7 @@ const Notepad = () => {
                 selectedDate={date}
             />
 
-            <View style={styles.buttons}>
+            <View style={styles.containerButtons}>
                 <Text style={styles.textEmoticons}>Como se sente hoje?</Text>
                 <View style={styles.emoticons}>
                     {expressions.map(({ id, symbol }) => (
@@ -92,11 +113,25 @@ const Notepad = () => {
                             ]}
                             onPress={() => handleButtonPress(id, symbol)}
                         >
-                            <Text style={styles.buttonText}>{symbol}</Text>
+                            <Text style={styles.emotion}>{symbol}</Text>
                         </TouchableOpacity>
                     ))}
                 </View>
             </View>
+
+            <Text style={styles.textDaily}>Meu Diário</Text>
+            {registros && registros.length > 0 ? (
+                <FlatList
+                    contentContainerStyle={{ paddingHorizontal: wp('1%') }}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                    data={registros}
+                    keyExtractor={(item) => String(item.id)}
+                    renderItem={({ item }) => <Registers data={item} />}
+                />
+            ) : (
+                <Text style={styles.emptyText}>Nenhum registro encontrado.</Text>
+            )}
 
             <View style={styles.footer}>
                 <TouchableOpacity style={styles.buttonFooter} onPress={openDatePicker}>
@@ -121,21 +156,35 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
+        backgroundColor: '#8896d7',
     },
 
-    buttons: {
-        backgroundColor: '#8896d7',
-        flex: 1,
+    containerButtons: {
         width: wp('100%'),
-        height: hp('100%'),
+        marginBottom: hp('4%')
     },
 
     textEmoticons: {
-        paddingStart: wp('4%'),
-        paddingTop: wp('5%'),
+        marginStart: wp('4%'),
+        marginTop: wp('5%'),
         fontSize: hp('2.5%'),
         fontWeight: 'bold',
         color: 'white'
+    },
+
+    textDaily: {
+        marginTop: wp('2%'),
+        paddingStart: wp('4%'),
+        fontSize: hp('2.5%'),
+        fontWeight: 'bold',
+        color: 'white'
+    },
+
+    emptyText:{
+        marginTop: wp('2%'),
+        paddingStart: wp('4%'),
+        fontSize: hp('1.8%'),
+        color: 'gray'
     },
 
     emoticons: {
@@ -159,7 +208,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: wp('4.5%'),
     },
 
-    buttonText: {
+    emotion: {
         fontSize: wp('6%'),
     },
 
@@ -187,9 +236,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'white'
     },
-
-    buttonsModal: {
-    }
 
 });
 

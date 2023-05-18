@@ -3,11 +3,13 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput, Modal, Plat
 import { AuthContext } from '../../context/auth'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Feather from 'react-native-vector-icons/Feather';
-import ImagePicker from 'react-native-image-picker';
 import { db } from '../../firebaseConnection';
 import { updateDoc, doc, getDoc } from 'firebase/firestore';
 
+import * as ImagePicker from 'expo-image-picker';
+
 const ProfileScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
   const { user, signOut, storageUser, setUser } = useContext(AuthContext);
 
   const [name, setName] = useState(user?.name)
@@ -17,10 +19,13 @@ const ProfileScreen = () => {
   const [url, setUrl] = useState(null);
   const [open, setOpen] = useState(false)
 
+  const [image, setImage] = useState(null);
+
+
   //Atualizar Perfil
   const updateProfile = async () => {
     if (name === '' || lastName === '' || phone === '') {
-      console.log('Todos os campos são obrigatórios!');
+      alert('Todos os campos são obrigatórios!');
       return;
     }
 
@@ -42,18 +47,18 @@ const ProfileScreen = () => {
 
       await updateDoc(userRef, updatedFields);
 
-      let data ={
+      let data = {
         uid: user.uid,
         name: name,
         lastName: lastName,
         phone: phone,
         email: user.email
       };
-  
+
       setUser(data);
       storageUser(data);
-      alert('Perfil atualizado com sucesso!');
       setOpen(false); // Fechar o modal após a atualização bem-sucedida
+      setModalVisible(true);
     } catch (error) {
       console.error('Erro ao atualizar o perfil:', error);
     }
@@ -61,58 +66,56 @@ const ProfileScreen = () => {
   };
 
   //Foto do Usuário
-  const uploadFiles = () => {
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
 
-    const options = {
-      noData: true,
-      mediaType: 'photo'
-    };
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    } else {
+      setImage(null);
+    }
+  };
 
-    ImagePicker.launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        console.log('cancelou o modal');
-      } else if (response.error) {
-        console.log('Erro' + response.errorMessage);
-      } else {
-        uploadFileFirebase(response)
-      }
-    })
-  }
-
-  const getFileLocalPath = response => {
-    const { path, uri } = response;
-    return Platform.OS === 'android' ? path : uri;
-  }
-
-  const uploadFileFirebase = async response => {
-    const fileSource = getFileLocalPath(response)
-  }
+  const removeImage = () => {
+    setImage(null);
+  };
 
   return (
 
     <View style={styles.container}>
-      <TouchableOpacity style={styles.header} />
+      <TouchableOpacity />
 
 
       {
-        url ?
+        image ?
           (
-            <TouchableOpacity style={styles.uploadButton} onPress={uploadFiles}>
-              <Text style={styles.uploadText}>+</Text>
-              <Image
-                style={styles.avatar}
-                source={{ uri: url }}
-              />
-            </TouchableOpacity>
+            <View>
+              <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
+                <Text style={styles.uploadText}></Text>
+                <Image
+                  style={styles.avatar}
+                  source={{ uri: image }}
+
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={removeImage}>
+                <Text style={styles.removeButtonText}>Remover Imagem</Text>
+              </TouchableOpacity>
+            </View>
           ) :
           (
-            <TouchableOpacity style={styles.uploadButton} onPress={uploadFiles}>
+            <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
               <Text style={styles.uploadText}>+</Text>
             </TouchableOpacity>
           )
       }
 
-      <Text style={styles.userName} numberOfLines={1}>{user.name}</Text>
+      <Text style={styles.userName} numberOfLines={1}>{user.name} {user.lastName} </Text>
       <Text style={styles.userEmail} numberOfLines={1}>{user.email}</Text>
 
       <TouchableOpacity style={styles.buttonChange} onPress={() => setOpen(true)}>
@@ -160,6 +163,25 @@ const ProfileScreen = () => {
 
         </View>
       </Modal>
+
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer1}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Dados Atualizados com Sucesso!</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {setModalVisible(false);}}
+            >
+              <Text style={styles.modalButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -169,10 +191,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#8896d7',
-  },
-
-  header: {
-
   },
 
   uploadButton: {
@@ -189,7 +207,7 @@ const styles = StyleSheet.create({
   uploadText: {
     zIndex: 9,
     position: 'absolute',
-    fontSize: 55,
+    fontSize: wp('15%'),
     color: '#e52246',
     opacity: 0.4
   },
@@ -202,53 +220,49 @@ const styles = StyleSheet.create({
   },
 
   userName: {
-    marginTop: 20,
-    marginLeft: 20,
-    marginRight: 20,
-    fontSize: 28,
+    marginTop: hp('3%'),
+    fontSize: wp('7%'),
     color: '#FFF',
     fontWeight: 'bold'
   },
 
   userEmail: {
-    marginTop: 9,
-    marginLeft: 20,
-    marginRight: 20,
-    fontSize: 20,
+    marginTop: hp('2%'),
+    fontSize: wp('5%'),
     color: '#DDD',
     fontStyle: 'italic'
   },
 
   buttonExit: {
-    marginTop: 15,
+    marginTop: hp('2%'),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#ff4040',
-    width: '80%',
-    height: 45,
+    width: wp('80%'),
+    height: hp('5%'),
     borderRadius: 10,
   },
 
   buttonChange: {
-    marginTop: 15,
+    marginTop: hp('2%'),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#428cfd',
-    width: '80%',
-    height: 45,
+    width: wp('80%'),
+    height: hp('5%'),
     borderRadius: 10,
   },
 
 
   buttonText: {
-    fontSize: 20,
+    fontSize: wp('5%'),
     color: '#fff',
     fontWeight: 'bold'
   },
 
   modalContainer: {
-    width: '100%',
-    height: '52%',
+    width: wp('100%'),
+    height: hp('52%'),
     backgroundColor: '#556aa9',
     justifyContent: 'center',
     alignItems: 'center',
@@ -258,24 +272,59 @@ const styles = StyleSheet.create({
 
   buttonBack: {
     position: 'absolute',
-    top: 18,
-    left: 25,
+    top: hp('2%'),
+    left: wp('4%'),
     flexDirection: 'row',
     alignItems: 'center'
   },
 
   input: {
-    width: '90%',
-    height: 50,
+    width: wp('90%'),
+    height: hp('6%'),
     backgroundColor: '#DDD',
     borderRadius: 10,
-    padding: 10,
-    margin: 10,
-    fontSize: 20,
-    textAlign: 'center'
+    padding: hp('1%'),
+    margin: hp('1.5%'),
+    fontSize: wp('5%'),
+    textAlign: 'center',
   },
 
-
+  removeButtonText: {
+    marginTop: 20,
+    marginLeft: 39,
+    marginRight: 20,
+    fontSize: 12,
+    color: '#FFF',
+    fontWeight: 'bold'
+  },
+  modalContainer1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: '#556aa9',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  modalButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 
 })
 
