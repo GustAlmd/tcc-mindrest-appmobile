@@ -36,10 +36,10 @@ export default function SignUp() {
     <View style={styles.container}>
       <View style={styles.containerHeader}>
       <Animatable.Image
-        source={require('../../assets/logo_transparent.png')}
-        style={{width:'100%', height:'100%'}}
+        source={require('../../assets/logoBrancaRoxa.png')}
+        style={{width:wp('100%'), height:'100%',}}
         resizeMod='contain'
-        animation='fadeInDown'
+        animation='fadeInUp'
       />
       </View>
       <KeyboardAwareScrollView style={styles.containerForm} >
@@ -172,7 +172,8 @@ const styles = StyleSheet.create({
     height: hp('20%'),
     backgroundColor: '#556aa9',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center' ,
+    padding: wp('2%')
   },
   containerForm: {
     backgroundColor: '#FFF',
