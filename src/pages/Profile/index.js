@@ -5,6 +5,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import Feather from 'react-native-vector-icons/Feather';
 import { db } from '../../firebaseConnection';
 import { updateDoc, doc, getDoc } from 'firebase/firestore';
+import * as Animatable from 'react-native-animatable' 
+
 
 import * as ImagePicker from 'expo-image-picker';
 
@@ -94,7 +96,7 @@ const ProfileScreen = () => {
       {
         image ?
           (
-            <View>
+            <Animatable.View animation='fadeInDown'>
               <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
                 <Text style={styles.uploadText}></Text>
                 <Image
@@ -106,7 +108,7 @@ const ProfileScreen = () => {
               <TouchableOpacity onPress={removeImage}>
                 <Text style={styles.removeButtonText}>Remover Imagem</Text>
               </TouchableOpacity>
-            </View>
+            </Animatable.View>
           ) :
           (
             <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>

@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import gameData from './data';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import * as Animatable from 'react-native-animatable' 
 
 
 const Card = ({ title, description, navigate }) => {
@@ -31,7 +32,7 @@ const App = () => {
         <Text style={styles.titleGame}>Jogos para React</Text>
         <Text style={styles.subtitleGame}>Escolha um Jogo Abaixo</Text>
       </View>
-      <View style={styles.containerCards}>
+      <Animatable.View style={styles.containerCards} animation='fadeInUp' >
         <FlatList
           data={gameData}
           renderItem={renderItem}
@@ -39,7 +40,7 @@ const App = () => {
           numColumns={2}
           contentContainerStyle={styles.cardList}
         />
-      </View>
+      </Animatable.View>
     </View>
   );
 };

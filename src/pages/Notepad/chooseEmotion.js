@@ -2,6 +2,8 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import * as Animatable from 'react-native-animatable' 
+
 
 const ChooseEmotion = ({ route }) => {
     const { date } = route.params;
@@ -13,8 +15,8 @@ const ChooseEmotion = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.containerEmotion}>
-                <Text style={styles.title}> Como você está se sentindo? </Text>
+            <Animatable.View style={styles.containerEmotion} animation='fadeInLeft'>
+                <Animatable.Text style={styles.title} animation='fadeInDown'> Como você está se sentindo? </Animatable.Text>
                 <TouchableOpacity
                     style={[styles.buttonEmotion, { backgroundColor: '#bbf7d0' }]}
                     onPress={() => handleEmotionSwitch("radiante", "😀")}
@@ -53,7 +55,7 @@ const ChooseEmotion = ({ route }) => {
                     <Text style={styles.emotion}>😥</Text>
                     <Text style={styles.text}> Triste </Text>
                 </TouchableOpacity>
-            </View>
+            </Animatable.View>
         </View>
     );
 };

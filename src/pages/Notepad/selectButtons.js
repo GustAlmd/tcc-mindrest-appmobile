@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
+import * as Animatable from 'react-native-animatable' 
+
 
 const SelectButtons = ({ route }) => {
   const navigation = useNavigation();
@@ -38,7 +40,7 @@ const SelectButtons = ({ route }) => {
 
       <ScrollView style={styles.scroll}>
 
-        <View style={[styles.containerWrite, { marginTop: hp('1%') }]}>
+        <Animatable.View style={[styles.containerWrite, { marginTop: hp('1%') }]} animation='fadeInLeft'>
           <Text style={styles.textWrite}>Social</Text>
           <View style={styles.containerButtons}>
             <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Família') && styles.selectedButton]} onPress={() => handleButtonPress('Família')} >
@@ -62,9 +64,9 @@ const SelectButtons = ({ route }) => {
               <Text style={styles.textButton}>Outros</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </Animatable.View>
 
-        <View style={styles.containerWrite}>
+        <Animatable.View style={styles.containerWrite} animation='fadeInLeft'>
           <Text style={styles.textWrite}>Saúde</Text>
           <View style={styles.containerButtons}>
             <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Fiquei Disposto') && styles.selectedButton]} onPress={() => handleButtonPress('Fiquei Disposto')}>
@@ -82,9 +84,9 @@ const SelectButtons = ({ route }) => {
               <Text style={styles.textButton}>Fiquei Desanimado</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </Animatable.View>
 
-        <View style={styles.containerWrite}>
+        <Animatable.View style={styles.containerWrite} animation='fadeInLeft'>
           <Text style={styles.textWrite}>Alimentação</Text>
           <View style={styles.containerButtons}>
             <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Comi Bem') && styles.selectedButton]} onPress={() => handleButtonPress('Comi Bem')}>
@@ -105,9 +107,9 @@ const SelectButtons = ({ route }) => {
               <Text style={styles.textButton}>Me Hidratei Mal</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </Animatable.View>
 
-        <View style={styles.containerWrite}>
+        <Animatable.View style={styles.containerWrite} animation='fadeInLeft'>
           <Text style={styles.textWrite}>Sono</Text>
           <View style={styles.containerButtons}>
             <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Dormi Mal') && styles.selectedButton]} onPress={() => handleButtonPress('Dormi Mal')}>
@@ -125,9 +127,9 @@ const SelectButtons = ({ route }) => {
               <Text style={styles.textButton}>Dormi Tarde</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </Animatable.View>
 
-        <View style={styles.containerWrite}>
+        <Animatable.View style={styles.containerWrite} animation='fadeInLeft'>
           <Text style={styles.textWrite}>Auto Cuidado</Text>
           <View style={styles.containerButtons}>
             <TouchableOpacity style={[styles.buttons, { flex: 1 }, selectedButtons.includes('Cuidei da Pele') && styles.selectedButton]} onPress={() => handleButtonPress('Cuidei da Pele')}>
@@ -148,15 +150,15 @@ const SelectButtons = ({ route }) => {
               <Text style={styles.textButton}>Descansei</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </Animatable.View>
 
       </ScrollView>
 
-      <View style={styles.footer}>
+      <Animatable.View style={styles.footer} animation='fadeInUp'>
         <TouchableOpacity style={styles.button} onPress={() => buttonContinue(selectedButtons, emotionId, symbol)}>
           <Text style={styles.textButton}>Continuar</Text>
         </TouchableOpacity>
-      </View>
+      </Animatable.View>
 
     </View>
   );

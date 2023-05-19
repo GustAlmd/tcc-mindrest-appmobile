@@ -6,6 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../firebaseConnection';
 import { AuthContext } from '../../context/auth'
+import * as Animatable from 'react-native-animatable' 
+
 
 const Write = ({ route }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -80,7 +82,7 @@ const Write = ({ route }) => {
 
       <ScrollView style={styles.scroll}>
 
-        <View style={styles.containerSelections}>
+        <Animatable.View style={styles.containerSelections} animation='fadeInLeft'>
 
           <Text style={styles.text}>{formattedDate}</Text>
 
@@ -111,9 +113,9 @@ const Write = ({ route }) => {
 
             </View>
           </View>
-        </View>
+        </Animatable.View>
 
-        <View style={styles.containerWrite}>
+        <Animatable.View style={styles.containerWrite} animation='fadeInLeft'>
           <Text style={styles.questionText}>Como foi o seu dia?</Text>
           <TextInput
             style={[styles.input, isFocused && styles.inputFocused, { textAlignVertical: 'top', }]}
@@ -168,15 +170,15 @@ const Write = ({ route }) => {
             maxHeight={80}
             multiline={true}
           />
-        </View>
+        </Animatable.View>
 
       </ScrollView>
 
-      <View style={styles.footer}>
+      <Animatable.View style={styles.footer} animation='fadeInUp'>
         <TouchableOpacity style={styles.buttonFooter} onPress={handleSave}>
           <Text style={styles.textButton}>Salvar</Text>
         </TouchableOpacity>
-      </View>
+      </Animatable.View>
 
       <Modal
         visible={modalVisible}

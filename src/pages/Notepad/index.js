@@ -12,6 +12,8 @@ import Registers from './Registers';
 import { db } from '../../firebaseConnection';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { AuthContext } from '../../context/auth'
+import * as Animatable from 'react-native-animatable' 
+
 
 const expressions = [
     { id: 'radiante', symbol: '😀' },
@@ -101,7 +103,7 @@ const Notepad = () => {
                 selectedDate={date}
             />
 
-            <View style={styles.containerButtons}>
+            <Animatable.View style={styles.containerButtons} animation='fadeInDown'>
                 <Text style={styles.textEmoticons}>Como se sente hoje?</Text>
                 <View style={styles.emoticons}>
                     {expressions.map(({ id, symbol }) => (
@@ -117,11 +119,12 @@ const Notepad = () => {
                         </TouchableOpacity>
                     ))}
                 </View>
-            </View>
+            </Animatable.View>
 
-            <Text style={styles.textDaily}>Meu Diário</Text>
+            <Animatable.Text style={styles.textDaily} animation='fadeInLeft'>Meu Diário</Animatable.Text>
             {registros && registros.length > 0 ? (
-                <FlatList
+                <Animatable.FlatList
+                    animation='fadeInDown'
                     contentContainerStyle={{ paddingHorizontal: wp('1%') }}
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
@@ -130,14 +133,14 @@ const Notepad = () => {
                     renderItem={({ item }) => <Registers data={item} />}
                 />
             ) : (
-                <Text style={styles.emptyText}>Nenhum registro encontrado.</Text>
+                <Animatable.Text style={styles.emptyText} animation='fadeInLeft' >Nenhum registro encontrado.</Animatable.Text>
             )}
 
-            <View style={styles.footer}>
+            <Animatable.View style={styles.footer} animation='fadeInUp'>
                 <TouchableOpacity style={styles.buttonFooter} onPress={openDatePicker}>
                     <Text style={styles.textButton}>Registre o seu dia!</Text>
                 </TouchableOpacity>
-            </View>
+            </Animatable.View>
 
             {showPicker && (
                 <DateTimePicker

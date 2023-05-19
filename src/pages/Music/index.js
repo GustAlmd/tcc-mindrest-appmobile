@@ -5,6 +5,8 @@ import { Ionicons } from "@expo/vector-icons";
 import songs from "./model/data";
 import { Audio } from 'expo-av';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import * as Animatable from 'react-native-animatable' 
+
 
 export default function Music() {
 
@@ -98,7 +100,7 @@ export default function Music() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.maincontainer}>
+            <Animatable.View style={styles.maincontainer} animation='fadeInUp' >
 
                 {/* image */}
                 <Image style={styles.artwork} source={songs[songIndex].artwork } />
@@ -147,7 +149,7 @@ export default function Music() {
                         <Ionicons name="play-skip-forward-outline" size={45} color="#ffffff" />
                     </TouchableOpacity>
                 </View>
-            </View>
+            </Animatable.View>
 
 
         </SafeAreaView>
