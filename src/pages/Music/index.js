@@ -100,19 +100,19 @@ export default function Music() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Animatable.View style={styles.maincontainer} animation='fadeInUp' >
+            <View style={styles.maincontainer}  >
 
                 {/* image */}
-                <Image style={styles.artwork} source={songs[songIndex].artwork } />
+                <Animatable.Image style={styles.artwork} source={songs[songIndex].artwork } animation='fadeInDown' />
 
                 {/* Song Content */}
-                <View>
+                <Animatable.View animation='fadeInRight'>
                     <Text style={[styles.songContent, styles.songTitle]}> {songs[songIndex].title} </Text>
                     <Text style={[styles.songContent, styles.songArtist]}> {songs[songIndex].artist} </Text>
-                </View>
+                </Animatable.View>
 
                 {/* slider */}
-                <View>
+                <Animatable.View animation='fadeInLeft'>
                     <Slider
                         style={styles.progressBar}
                         value={progress}
@@ -128,10 +128,10 @@ export default function Music() {
                         <Text style={styles.progressLabelText}>{formatDuration(currentDuration)}</Text>
                         <Text style={styles.progressLabelText}>{formatDuration(totalDuration)}</Text>
                     </View>
-                </View>
+                </Animatable.View>
 
                 {/* music controls */}
-                <View style={styles.musicControlsContainer}>
+                <Animatable.View style={styles.musicControlsContainer} animation='fadeInUp'>
                     <TouchableOpacity onPress={() => handlePrevious()}>
                         <Ionicons name="play-skip-back-outline" size={45} color="#ffffff" />
                     </TouchableOpacity>
@@ -148,8 +148,8 @@ export default function Music() {
                     <TouchableOpacity onPress={() => handleNext()}>
                         <Ionicons name="play-skip-forward-outline" size={45} color="#ffffff" />
                     </TouchableOpacity>
-                </View>
-            </Animatable.View>
+                </Animatable.View>
+            </View>
 
 
         </SafeAreaView>

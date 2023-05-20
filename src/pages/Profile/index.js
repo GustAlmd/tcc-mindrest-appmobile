@@ -5,9 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import Feather from 'react-native-vector-icons/Feather';
 import { db } from '../../firebaseConnection';
 import { updateDoc, doc, getDoc } from 'firebase/firestore';
-import * as Animatable from 'react-native-animatable' 
-
-
+import * as Animatable from 'react-native-animatable'
 import * as ImagePicker from 'expo-image-picker';
 
 const ProfileScreen = () => {
@@ -105,28 +103,49 @@ const ProfileScreen = () => {
 
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={removeImage}>
+              <TouchableOpacity onPress={removeImage} style={styles.removeButtonView}>
                 <Text style={styles.removeButtonText}>Remover Imagem</Text>
               </TouchableOpacity>
             </Animatable.View>
           ) :
           (
-            <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
-              <Text style={styles.uploadText}>+</Text>
-            </TouchableOpacity>
+            <Animatable.View animation='fadeInDown'>
+              <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
+                <Text style={styles.uploadText}>+</Text>
+              </TouchableOpacity>
+            </Animatable.View>
           )
       }
 
-      <Text style={styles.userName} numberOfLines={1}>{user.name} {user.lastName} </Text>
-      <Text style={styles.userEmail} numberOfLines={1}>{user.email}</Text>
+      <Animatable.Text animation='fadeInDown' style={styles.userName} numberOfLines={1}>{user.name} {user.lastName} </Animatable.Text>
+      <Animatable.Text animation='fadeInDown' style={styles.userEmail} numberOfLines={1}>{user.email}</Animatable.Text>
 
-      <TouchableOpacity style={styles.buttonChange} onPress={() => setOpen(true)}>
-        <Text style={styles.buttonText}> Atualizar perfil </Text>
-      </TouchableOpacity>
+      <Animatable.View animation='fadeInLeft'>
+        <TouchableOpacity style={styles.buttonChange} onPress={() => setOpen(true)}>
+          <View style={styles.buttonContent}>
+            <Feather name="refresh-cw" size={20} color="#fff" style={styles.buttonIcon} />
+            <Text style={styles.buttonText}>Atualizar perfil</Text>
+          </View>
+        </TouchableOpacity>
+      </Animatable.View>
 
-      <TouchableOpacity style={styles.buttonExit} onPress={() => signOut()}>
-        <Text style={styles.buttonText}> Sair </Text>
-      </TouchableOpacity>
+      <Animatable.View animation='fadeInRight'>
+        <TouchableOpacity style={styles.buttonAbout} onPress={() => setOpen()}>
+          <View style={styles.buttonContent}>
+            <Feather name="info" size={20} color="#fff" style={styles.buttonIcon} />
+            <Text style={styles.buttonText}>Sobre</Text>
+          </View>
+        </TouchableOpacity>
+      </Animatable.View>
+
+      <Animatable.View animation='fadeInUp'>
+        <TouchableOpacity style={styles.buttonExit} onPress={() => signOut()}>
+          <View style={styles.buttonContent}>
+            <Feather name="log-out" size={20} color="#fff" style={styles.buttonIcon} />
+            <Text style={styles.buttonText}>Sair</Text>
+          </View>
+        </TouchableOpacity>
+      </Animatable.View>
 
 
       <Modal visible={open} animationType="slide" transparent={true}>
@@ -177,7 +196,7 @@ const ProfileScreen = () => {
             <Text style={styles.modalText}>Dados Atualizados com Sucesso!</Text>
             <TouchableOpacity
               style={styles.modalButton}
-              onPress={() => {setModalVisible(false);}}
+              onPress={() => { setModalVisible(false); }}
             >
               <Text style={styles.modalButtonText}>OK</Text>
             </TouchableOpacity>
@@ -198,9 +217,9 @@ const styles = StyleSheet.create({
   uploadButton: {
     marginTop: '20%',
     backgroundColor: '#fff',
-    width: 165,
-    height: 165,
-    borderRadius: 90,
+    width: wp('45%'),
+    height: hp('21.7%'),
+    borderRadius: wp('25%'),
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 5
@@ -215,10 +234,9 @@ const styles = StyleSheet.create({
   },
 
   avatar: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    opacity: 0.9
+    width: wp('44%'),
+    height: hp('21%'),
+    borderRadius: wp('25%'),
   },
 
   userName: {
@@ -255,6 +273,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 
+  buttonAbout: {
+    marginTop: hp('2%'),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#428cfd',
+    width: wp('80%'),
+    height: hp('5%'),
+    borderRadius: 10,
+  },
 
   buttonText: {
     fontSize: wp('5%'),
@@ -292,13 +319,16 @@ const styles = StyleSheet.create({
   },
 
   removeButtonText: {
-    marginTop: 20,
-    marginLeft: 39,
-    marginRight: 20,
-    fontSize: 12,
+    marginTop: hp('1.5%'),
+    fontSize: wp('3%'),
     color: '#FFF',
     fontWeight: 'bold'
   },
+  removeButtonView: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
   modalContainer1: {
     flex: 1,
     justifyContent: 'center',
@@ -326,6 +356,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  buttonIcon: {
+    marginRight: 5,
   },
 
 })

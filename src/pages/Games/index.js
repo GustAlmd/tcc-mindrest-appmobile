@@ -28,10 +28,10 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerTitle}>
+      <Animatable.View animation='fadeInDown' style={styles.containerTitle}>
         <Text style={styles.titleGame}>Jogos para React</Text>
         <Text style={styles.subtitleGame}>Escolha um Jogo Abaixo</Text>
-      </View>
+      </Animatable.View>
       <Animatable.View style={styles.containerCards} animation='fadeInUp' >
         <FlatList
           data={gameData}
